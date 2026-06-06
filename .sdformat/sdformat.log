@@ -1,0 +1,16 @@
+Dbg [parser.cc:574] Converting a deprecated source[/opt/ros/humble/share/turtlebot3_gazebo/worlds/turtlebot3_world.world].
+Dbg [Converter.cc:68] Version[1.6] to Version[1.7]
+  Please use the gz sdf tool to update your SDF files.
+    $ gz sdf -c [sdf_file]
+Dbg [parser.cc:574] Converting a deprecated source[/home/ashl_lash/.gazebo/models/ground_plane/model.sdf].
+Dbg [Converter.cc:68] Version[1.5] to Version[1.7]
+  Please use the gz sdf tool to update your SDF files.
+    $ gz sdf -c [sdf_file]
+Dbg [parser.cc:574] Converting a deprecated source[/home/ashl_lash/.gazebo/models/sun/model.sdf].
+Dbg [Converter.cc:68] Version[1.5] to Version[1.7]
+  Please use the gz sdf tool to update your SDF files.
+    $ gz sdf -c [sdf_file]
+Dbg [parser.cc:574] Converting a deprecated source[/opt/ros/humble/share/turtlebot3_gazebo/models/turtlebot3_world/model.sdf].
+Dbg [Converter.cc:68] Version[1.5] to Version[1.7]
+  Please use the gz sdf tool to update your SDF files.
+    $ gz sdf -c [sdf_file]

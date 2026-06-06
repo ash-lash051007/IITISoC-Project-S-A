@@ -1,0 +1,11 @@
+1780577830.5147450 [INFO] [launch]: All log files can be found below /home/ashl_lash/.ros/log/2026-06-04-18-27-10-513591-Hemangi-VirtualBox-63290
+1780577830.5149040 [INFO] [launch]: Default logging verbosity is set to INFO
+1780577832.3877897 [INFO] [gzserver-1]: process started with pid [63291]
+1780577832.3906450 [INFO] [gzclient-2]: process started with pid [63293]
+1780577832.4008241 [INFO] [robot_state_publisher-3]: process started with pid [63295]
+1780577832.4027164 [INFO] [spawn_entity.py-4]: process started with pid [63297]
+1780577868.8614225 [ERROR] [spawn_entity.py-4]: process has died [pid 63297, exit code 1, cmd '/opt/ros/humble/lib/gazebo_ros/spawn_entity.py -entity waffle -file /opt/ros/humble/share/turtlebot3_gazebo/models/turtlebot3_waffle/model.sdf -x -2.0 -y -0.5 -z 0.01 --ros-args'].
+1780578071.5594299 [INFO] [gzclient-2]: process has finished cleanly [pid 63293]
+1780578079.2476432 [WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+1780578079.4273779 [INFO] [robot_state_publisher-3]: process has finished cleanly [pid 63295]
+1780578079.5794749 [INFO] [gzserver-1]: process has finished cleanly [pid 63291]

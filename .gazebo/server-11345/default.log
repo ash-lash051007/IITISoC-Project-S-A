@@ -1,0 +1,27 @@
+Gazebo multi-robot simulator, version 11.10.2
+Copyright (C) 2012 Open Source Robotics Foundation.
+Released under the Apache 2 License.
+http://gazebosim.org
+
+
+(1780577833 659412301) [Wrn] [gazebo_ros_init.cpp:178] 
+#     # ####### ####### ###  #####  #######
+##    # #     #    #     #  #     # #
+# #   # #     #    #     #  #       #
+#  #  # #     #    #     #  #       #####
+#   # # #     #    #     #  #       #
+#    ## #     #    #     #  #     # #
+#     # #######    #    ###  #####  #######
+
+This version of Gazebo, now called Gazebo classic, reaches end-of-life
+in January 2025. Users are highly encouraged to migrate to the new Gazebo
+using our migration guides (https://gazebosim.org/docs/latest/gazebo_classic_migration?utm_source=gazebo_ros_pkgs&utm_medium=cli)
+
+
+(1780577838 865004043) [Msg] Waiting for master.
+(1780577838 892054595) [Msg] Connected to gazebo master @ http://127.0.0.1:11345
+(1780577838 892075421) [Msg] Publicized address: 10.0.2.15
+(1780577839 387738001) [Wrn] [ModelDatabase.cc:340] Getting models from[http://models.gazebosim.org/]. This may take a few seconds.
+(1780578034 709514361) [Msg] Loading world file [/opt/ros/humble/share/turtlebot3_gazebo/worlds/turtlebot3_world.world]
+(1780578035 207956810) Init world[default]
+(1780578071 853507390) [Wrn] [Publisher.cc:135] Queue limit reached for topic /gazebo/default/physics/contacts, deleting message. This warning is printed only once.

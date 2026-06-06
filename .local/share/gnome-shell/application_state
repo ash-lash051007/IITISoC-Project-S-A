@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<application-state>
+  <context id="">
+    <application id="nautilus-autorun-software.desktop" score="0" last-seen="0"/>
+    <application id="org.gnome.Nautilus.desktop" score="6" last-seen="1780724635"/>
+    <application id="gnome-initial-setup.desktop" score="2" last-seen="1780570809"/>
+    <application id="firefox_firefox.desktop" score="1341" last-seen="1780730517"/>
+    <application id="org.gnome.Terminal.desktop" score="21014" last-seen="1780730526"/>
+    <application id="gazebo.desktop" score="3" last-seen="1780578071"/>
+    <application id="apport-gtk.desktop" score="0" last-seen="1780576992"/>
+    <application id="update-manager.desktop" score="0" last-seen="1780570878"/>
+  </context>
+</application-state>
