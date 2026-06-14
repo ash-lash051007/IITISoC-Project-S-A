@@ -361,128 +361,158 @@
     <!-- ========== WASTE MARKER STANDS ========== -->
     <!-- These are small stands where ArUco markers will be placed -->
 
+    <!-- Marker Stand 1 -->
     <model name="marker_stand_1">
       <static>true</static>
-      <pose>-7 2 0.5 0 0 0</pose>
-      <link name="link">
+      <pose>-7 2 0 0 0 0</pose>
+      <link name="pedestal">
+        <pose>0 0 0.2 0 0 0</pose>
         <collision name="collision">
-          <geometry>
-            <box><size>0.1 0.1 1</size></box>
-          </geometry>
+          <geometry><box><size>0.15 0.15 0.4</size></box></geometry>
         </collision>
         <visual name="visual">
-          <geometry>
-            <box><size>0.1 0.1 1</size></box>
-          </geometry>
-          <material>
-            <ambient>1 0 0 1</ambient>
-            <diffuse>1 0 0 1</diffuse>
-          </material>
+          <geometry><box><size>0.15 0.15 0.4</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="marker_panel">
+        <pose>0 0 0.55 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.3 0.02 0.3</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.3 0.02 0.3</size></box></geometry>
+          <material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material>
         </visual>
       </link>
     </model>
 
+    <!-- Marker Stand 2 -->
     <model name="marker_stand_2">
       <static>true</static>
-      <pose>7 -2 0.5 0 0 0</pose>
-      <link name="link">
+      <pose>7 -2 0 0 0 0</pose>
+      <link name="pedestal">
+        <pose>0 0 0.2 0 0 0</pose>
         <collision name="collision">
-          <geometry>
-            <box><size>0.1 0.1 1</size></box>
-          </geometry>
+          <geometry><box><size>0.15 0.15 0.4</size></box></geometry>
         </collision>
         <visual name="visual">
-          <geometry>
-            <box><size>0.1 0.1 1</size></box>
-          </geometry>
-          <material>
-            <ambient>1 0 0 1</ambient>
-            <diffuse>1 0 0 1</diffuse>
-          </material>
+          <geometry><box><size>0.15 0.15 0.4</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="marker_panel">
+        <pose>0 0 0.55 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.3 0.02 0.3</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.3 0.02 0.3</size></box></geometry>
+          <material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material>
         </visual>
       </link>
     </model>
 
+    <!-- Marker Stand 3 -->
     <model name="marker_stand_3">
       <static>true</static>
-      <pose>0 -7 0.5 0 0 0</pose>
-      <link name="link">
+      <pose>0 -7 0 0 0 0</pose>
+      <link name="pedestal">
+        <pose>0 0 0.2 0 0 0</pose>
         <collision name="collision">
-          <geometry>
-            <box><size>0.1 0.1 1</size></box>
-          </geometry>
+          <geometry><box><size>0.15 0.15 0.4</size></box></geometry>
         </collision>
         <visual name="visual">
-          <geometry>
-            <box><size>0.1 0.1 1</size></box>
-          </geometry>
-          <material>
-            <ambient>1 0 0 1</ambient>
-            <diffuse>1 0 0 1</diffuse>
-          </material>
+          <geometry><box><size>0.15 0.15 0.4</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="marker_panel">
+        <pose>0 0 0.55 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.3 0.02 0.3</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.3 0.02 0.3</size></box></geometry>
+          <material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material>
         </visual>
       </link>
     </model>
 
+    <!-- Marker Stand 4 -->
     <model name="marker_stand_4">
       <static>true</static>
-      <pose>3 7 0.5 0 0 0</pose>
-      <link name="link">
+      <pose>3 7 0 0 0 0</pose>
+      <link name="pedestal">
+        <pose>0 0 0.2 0 0 0</pose>
         <collision name="collision">
-          <geometry>
-            <box><size>0.1 0.1 1</size></box>
-          </geometry>
+          <geometry><box><size>0.15 0.15 0.4</size></box></geometry>
         </collision>
         <visual name="visual">
-          <geometry>
-            <box><size>0.1 0.1 1</size></box>
-          </geometry>
-          <material>
-            <ambient>1 0 0 1</ambient>
-            <diffuse>1 0 0 1</diffuse>
-          </material>
+          <geometry><box><size>0.15 0.15 0.4</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="marker_panel">
+        <pose>0 0 0.55 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.3 0.02 0.3</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.3 0.02 0.3</size></box></geometry>
+          <material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material>
         </visual>
       </link>
     </model>
 
+    <!-- Marker Stand 5 -->
     <model name="marker_stand_5">
       <static>true</static>
-      <pose>-3 -6 0.5 0 0 0</pose>
-      <link name="link">
+      <pose>-3 -6 0 0 0 0</pose>
+      <link name="pedestal">
+        <pose>0 0 0.2 0 0 0</pose>
         <collision name="collision">
-          <geometry>
-            <box><size>0.1 0.1 1</size></box>
-          </geometry>
+          <geometry><box><size>0.15 0.15 0.4</size></box></geometry>
         </collision>
         <visual name="visual">
-          <geometry>
-            <box><size>0.1 0.1 1</size></box>
-          </geometry>
-          <material>
-            <ambient>1 0 0 1</ambient>
-            <diffuse>1 0 0 1</diffuse>
-          </material>
+          <geometry><box><size>0.15 0.15 0.4</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="marker_panel">
+        <pose>0 0 0.55 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.3 0.02 0.3</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.3 0.02 0.3</size></box></geometry>
+          <material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material>
         </visual>
       </link>
     </model>
 
+    <!-- Marker Stand 6 -->
     <model name="marker_stand_6">
       <static>true</static>
-      <pose>-6 -3 0.5 0 0 0</pose>
-      <link name="link">
+      <pose>-6 -3 0 0 0 0</pose>
+      <link name="pedestal">
+        <pose>0 0 0.2 0 0 0</pose>
         <collision name="collision">
-          <geometry>
-            <box><size>0.1 0.1 1</size></box>
-          </geometry>
+          <geometry><box><size>0.15 0.15 0.4</size></box></geometry>
         </collision>
         <visual name="visual">
-          <geometry>
-            <box><size>0.1 0.1 1</size></box>
-          </geometry>
-          <material>
-            <ambient>1 0 0 1</ambient>
-            <diffuse>1 0 0 1</diffuse>
-          </material>
+          <geometry><box><size>0.15 0.15 0.4</size></box></geometry>
+          <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material>
+        </visual>
+      </link>
+      <link name="marker_panel">
+        <pose>0 0 0.55 0 0 0</pose>
+        <collision name="collision">
+          <geometry><box><size>0.3 0.02 0.3</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.3 0.02 0.3</size></box></geometry>
+          <material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material>
         </visual>
       </link>
     </model>
