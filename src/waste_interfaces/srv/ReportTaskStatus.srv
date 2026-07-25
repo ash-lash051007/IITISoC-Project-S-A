@@ -1,0 +1,7 @@
+# Called by a robot to report progress/completion/failure of its assigned task.
+int32 task_id
+string robot_name
+string status               # IN_PROGRESS, COMPLETED, FAILED
+---
+bool success
+string message

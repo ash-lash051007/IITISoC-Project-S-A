@@ -1,0 +1,9 @@
+# Called by a robot when it is free and wants a target to go collect.
+string robot_name
+geometry_msgs/Pose robot_pose
+---
+bool task_available
+int32 task_id
+int32 target_id
+geometry_msgs/Point target_position
+string waste_type

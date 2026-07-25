@@ -1,0 +1,1 @@
+WasteTarget[] targets

@@ -1,0 +1,11 @@
+# Called by a robot's perception node whenever it sees an ArUco waste marker.
+int32 marker_id
+geometry_msgs/Point position
+string waste_type
+float32 confidence
+string robot_name
+---
+bool accepted
+bool is_duplicate
+int32 target_id
+string message
