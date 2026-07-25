@@ -1,0 +1,175 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <model name="warehouse_labels">
+    <static>true</static>
+
+    <!-- Machine 1 -->
+    <link name="label_machine1">
+      <pose>9.9 12.45 1.05 0 0 0</pose>
+      <visual name="visual">
+        <cast_shadows>false</cast_shadows>
+        <geometry>
+          <plane>
+            <normal>0 0 1</normal>
+            <size>3.2 0.8</size>
+          </plane>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://warehouse_labels/materials/scripts</uri>
+            <uri>model://warehouse_labels/materials/textures</uri>
+            <name>Labels/Machine1</name>
+          </script>
+        </material>
+      </visual>
+    </link>
+
+    <!-- Machine 2 -->
+    <link name="label_machine2">
+      <pose>9.9 5.25 1.35 0 0 0</pose>
+      <visual name="visual">
+        <cast_shadows>false</cast_shadows>
+        <geometry>
+          <plane>
+            <normal>0 0 1</normal>
+            <size>3.2 0.8</size>
+          </plane>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://warehouse_labels/materials/scripts</uri>
+            <uri>model://warehouse_labels/materials/textures</uri>
+            <name>Labels/Machine2</name>
+          </script>
+        </material>
+      </visual>
+    </link>
+
+    <!-- Rack (rack_storage_1) -->
+    <link name="label_rack_storage_1">
+      <pose>27.6 -0.6 2.55 0 0 0</pose>
+      <visual name="visual">
+        <cast_shadows>false</cast_shadows>
+        <geometry>
+          <plane>
+            <normal>0 0 1</normal>
+            <size>3.2 0.8</size>
+          </plane>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://warehouse_labels/materials/scripts</uri>
+            <uri>model://warehouse_labels/materials/textures</uri>
+            <name>Labels/Rack</name>
+          </script>
+        </material>
+      </visual>
+    </link>
+
+    <!-- Rack (rack_storage_2) -->
+    <link name="label_rack_storage_2">
+      <pose>27.6 -8.25 2.55 0 0 0</pose>
+      <visual name="visual">
+        <cast_shadows>false</cast_shadows>
+        <geometry>
+          <plane>
+            <normal>0 0 1</normal>
+            <size>3.2 0.8</size>
+          </plane>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://warehouse_labels/materials/scripts</uri>
+            <uri>model://warehouse_labels/materials/textures</uri>
+            <name>Labels/Rack</name>
+          </script>
+        </material>
+      </visual>
+    </link>
+
+    <!-- Rack (rack_storage_vertical) -->
+    <link name="label_rack_storage_vertical">
+      <pose>37.8 -2.4 2.55 0 0 0</pose>
+      <visual name="visual">
+        <cast_shadows>false</cast_shadows>
+        <geometry>
+          <plane>
+            <normal>0 0 1</normal>
+            <size>3.2 0.8</size>
+          </plane>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://warehouse_labels/materials/scripts</uri>
+            <uri>model://warehouse_labels/materials/textures</uri>
+            <name>Labels/Rack</name>
+          </script>
+        </material>
+      </visual>
+    </link>
+
+    <!-- Rack (rack_office) -->
+    <link name="label_rack_office">
+      <pose>40.7 24.6 2.55 0 0 0</pose>
+      <visual name="visual">
+        <cast_shadows>false</cast_shadows>
+        <geometry>
+          <plane>
+            <normal>0 0 1</normal>
+            <size>3.2 0.8</size>
+          </plane>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://warehouse_labels/materials/scripts</uri>
+            <uri>model://warehouse_labels/materials/textures</uri>
+            <name>Labels/Rack</name>
+          </script>
+        </material>
+      </visual>
+    </link>
+
+    <!-- Loading Area -->
+    <link name="label_loading_area">
+      <pose>6.0 24.5 1.80 0 0 0</pose>
+      <visual name="visual">
+        <cast_shadows>false</cast_shadows>
+        <geometry>
+          <plane>
+            <normal>0 0 1</normal>
+            <size>3.2 0.8</size>
+          </plane>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://warehouse_labels/materials/scripts</uri>
+            <uri>model://warehouse_labels/materials/textures</uri>
+            <name>Labels/LoadingArea</name>
+          </script>
+        </material>
+      </visual>
+    </link>
+
+    <!-- Cupboard -->
+    <link name="label_cupboard">
+      <pose>26.4 12.4 2.05 0 0 0</pose>
+      <visual name="visual">
+        <cast_shadows>false</cast_shadows>
+        <geometry>
+          <plane>
+            <normal>0 0 1</normal>
+            <size>3.2 0.8</size>
+          </plane>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://warehouse_labels/materials/scripts</uri>
+            <uri>model://warehouse_labels/materials/textures</uri>
+            <name>Labels/Cupboard</name>
+          </script>
+        </material>
+      </visual>
+    </link>
+
+  </model>
+</sdf>

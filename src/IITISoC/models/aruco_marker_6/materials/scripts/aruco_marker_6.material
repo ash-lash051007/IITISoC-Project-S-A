@@ -1,0 +1,14 @@
+material aruco_material_6
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture aruco_marker_6.png
+        scale 1.0 1.0
+      }
+    }
+  }
+}

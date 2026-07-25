@@ -1,0 +1,89 @@
+material Labels/Machine1
+{
+  technique
+  {
+    pass
+    {
+      lighting off
+      scene_blend alpha_blend
+      depth_write off
+      texture_unit
+      {
+        texture label_machine1.png
+        filtering linear linear none
+      }
+    }
+  }
+}
+
+material Labels/Machine2
+{
+  technique
+  {
+    pass
+    {
+      lighting off
+      scene_blend alpha_blend
+      depth_write off
+      texture_unit
+      {
+        texture label_machine2.png
+        filtering linear linear none
+      }
+    }
+  }
+}
+
+material Labels/Rack
+{
+  technique
+  {
+    pass
+    {
+      lighting off
+      scene_blend alpha_blend
+      depth_write off
+      texture_unit
+      {
+        texture label_rack.png
+        filtering linear linear none
+      }
+    }
+  }
+}
+
+material Labels/LoadingArea
+{
+  technique
+  {
+    pass
+    {
+      lighting off
+      scene_blend alpha_blend
+      depth_write off
+      texture_unit
+      {
+        texture label_loading_area.png
+        filtering linear linear none
+      }
+    }
+  }
+}
+
+material Labels/Cupboard
+{
+  technique
+  {
+    pass
+    {
+      lighting off
+      scene_blend alpha_blend
+      depth_write off
+      texture_unit
+      {
+        texture label_cupboard.png
+        filtering linear linear none
+      }
+    }
+  }
+}

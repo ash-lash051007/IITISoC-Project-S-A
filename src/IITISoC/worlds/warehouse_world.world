@@ -1,0 +1,4734 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <world name="warehouse_world">
+
+    <!-- ================= PHYSICS ================= -->
+    <physics name="default_physics" default="true" type="ode">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1</real_time_factor>
+      <real_time_update_rate>1000</real_time_update_rate>
+      <ode>
+        <solver>
+          <type>quick</type>
+          <iters>150</iters>
+          <sor>1.3</sor>
+        </solver>
+        <constraints>
+          <cfm>0.00001</cfm>
+          <erp>0.2</erp>
+          <contact_max_correcting_vel>100</contact_max_correcting_vel>
+          <contact_surface_layer>0.001</contact_surface_layer>
+        </constraints>
+      </ode>
+    </physics>
+
+    <!-- ================= SCENE ================= -->
+    <scene>
+      <ambient>0.35 0.35 0.35 1</ambient>
+      <background>0.55 0.62 0.7 1</background>
+      <shadows>true</shadows>
+      <grid>false</grid>
+      <origin_visual>false</origin_visual>
+    </scene>
+
+    <!-- ================= LIGHTING ================= -->
+    <!-- Sun-only, unchanged. -->
+    <light name="sun" type="directional">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 30 0 0 0</pose>
+      <diffuse>0.85 0.85 0.82 1</diffuse>
+      <specular>0.15 0.15 0.15 1</specular>
+      <direction>-0.35 0.25 -0.9</direction>
+    </light>
+
+    <!-- =========================================================
+         BUILDING + FURNITURE
+         Rooms: Warehouse | Storage Room | Office
+         Footprint scale: 6.0x vs. the original sketch (1.5 x 2 x 2).
+         Wall thickness FROZEN at 0.15 m (excluded from doubling).
+         Heights never scaled. Tables/chairs always real-world size,
+         with an exact 0.3 m gap to their paired chair.
+         3 door OPENINGS (1.0 m wide) connect the three rooms; no
+         door leaf objects, just the wall gap.
+         ========================================================= -->
+
+    <model name="wall_warehouse_west">
+      <static>true</static>
+      <pose>0.0000 15.0000 1.5000 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>50.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.1500 30.1500 3.0000</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.1500 30.1500 3.0000</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.820 0.820 0.800 1.00</ambient>
+            <diffuse>0.820 0.820 0.800 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="wall_warehouse_north">
+      <static>true</static>
+      <pose>14.4000 30.0000 1.5000 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>50.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>28.9500 0.1500 3.0000</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>28.9500 0.1500 3.0000</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.820 0.820 0.800 1.00</ambient>
+            <diffuse>0.820 0.820 0.800 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="wall_upper_storage_shared">
+      <static>true</static>
+      <pose>26.1000 18.0000 1.5000 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>50.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>12.7500 0.1500 3.0000</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>12.7500 0.1500 3.0000</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.820 0.820 0.800 1.00</ambient>
+            <diffuse>0.820 0.820 0.800 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="wall_storage_west_exterior">
+      <static>true</static>
+      <pose>19.8000 -6.6000 1.5000 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>50.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.1500 13.3500 3.0000</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.1500 13.3500 3.0000</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.820 0.820 0.800 1.00</ambient>
+            <diffuse>0.820 0.820 0.800 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="wall_warehouse_south">
+      <static>true</static>
+      <pose>9.9000 0.0000 1.5000 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>50.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>19.9500 0.1500 3.0000</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>19.9500 0.1500 3.0000</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.820 0.820 0.800 1.00</ambient>
+            <diffuse>0.820 0.820 0.800 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="wall_office_storage_shared_south">
+      <static>true</static>
+      <pose>36.3000 7.8000 1.5000 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>50.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>7.9500 0.1500 3.0000</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>7.9500 0.1500 3.0000</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.820 0.820 0.800 1.00</ambient>
+            <diffuse>0.820 0.820 0.800 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="wall_office_south_exterior">
+      <static>true</static>
+      <pose>43.5000 7.8000 1.5000 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>50.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>6.7500 0.1500 3.0000</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>6.7500 0.1500 3.0000</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.860 0.840 0.780 1.00</ambient>
+            <diffuse>0.860 0.840 0.780 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="wall_storage_east_exterior">
+      <static>true</static>
+      <pose>40.2000 -2.7000 1.5000 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>50.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.1500 21.1500 3.0000</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.1500 21.1500 3.0000</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.820 0.820 0.800 1.00</ambient>
+            <diffuse>0.820 0.820 0.800 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="wall_storage_south_exterior">
+      <static>true</static>
+      <pose>30.0000 -13.2000 1.5000 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>50.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>20.5500 0.1500 3.0000</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>20.5500 0.1500 3.0000</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.820 0.820 0.800 1.00</ambient>
+            <diffuse>0.820 0.820 0.800 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="wall_office_west_upper">
+      <static>true</static>
+      <pose>28.8000 33.0000 1.5000 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>50.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.1500 6.1500 3.0000</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.1500 6.1500 3.0000</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.860 0.840 0.780 1.00</ambient>
+            <diffuse>0.860 0.840 0.780 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="wall_office_north_exterior">
+      <static>true</static>
+      <pose>37.8000 36.0000 1.5000 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>50.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>18.1500 0.1500 3.0000</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>18.1500 0.1500 3.0000</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.860 0.840 0.780 1.00</ambient>
+            <diffuse>0.860 0.840 0.780 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="wall_office_east_exterior">
+      <static>true</static>
+      <pose>46.8000 21.9000 1.5000 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>50.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.1500 28.3500 3.0000</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.1500 28.3500 3.0000</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.860 0.840 0.780 1.00</ambient>
+            <diffuse>0.860 0.840 0.780 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="door_warehouse_office_jamb_a">
+      <static>true</static>
+      <pose>28.8000 20.4625 1.5000 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>50.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.1500 5.0750 3.0000</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.1500 5.0750 3.0000</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.820 0.820 0.800 1.00</ambient>
+            <diffuse>0.820 0.820 0.800 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="door_warehouse_office_jamb_b">
+      <static>true</static>
+      <pose>28.8000 27.5375 1.5000 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>50.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.1500 5.0750 3.0000</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.1500 5.0750 3.0000</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.820 0.820 0.800 1.00</ambient>
+            <diffuse>0.820 0.820 0.800 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="door_warehouse_office_header">
+      <static>true</static>
+      <pose>28.8000 24.0000 2.5500 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>10.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.1500 2.0000 0.9000</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.1500 2.0000 0.9000</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.820 0.820 0.800 1.00</ambient>
+            <diffuse>0.820 0.820 0.800 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="door_warehouse_storage_jamb_a">
+      <static>true</static>
+      <pose>19.8000 3.9625 1.5000 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>50.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.1500 8.0750 3.0000</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.1500 8.0750 3.0000</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.820 0.820 0.800 1.00</ambient>
+            <diffuse>0.820 0.820 0.800 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="door_warehouse_storage_jamb_b">
+      <static>true</static>
+      <pose>19.8000 14.0375 1.5000 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>50.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.1500 8.0750 3.0000</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.1500 8.0750 3.0000</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.820 0.820 0.800 1.00</ambient>
+            <diffuse>0.820 0.820 0.800 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="door_warehouse_storage_header">
+      <static>true</static>
+      <pose>19.8000 9.0000 2.5500 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>10.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.1500 2.0000 0.9000</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.1500 2.0000 0.9000</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.820 0.820 0.800 1.00</ambient>
+            <diffuse>0.820 0.820 0.800 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="door_office_storage_jamb_a">
+      <static>true</static>
+      <pose>32.4000 9.8125 1.5000 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>50.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.1500 4.1750 3.0000</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.1500 4.1750 3.0000</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.860 0.840 0.780 1.00</ambient>
+            <diffuse>0.860 0.840 0.780 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="door_office_storage_jamb_b">
+      <static>true</static>
+      <pose>32.4000 15.9875 1.5000 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>50.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.1500 4.1750 3.0000</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.1500 4.1750 3.0000</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.860 0.840 0.780 1.00</ambient>
+            <diffuse>0.860 0.840 0.780 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="door_office_storage_header">
+      <static>true</static>
+      <pose>32.4000 12.9000 2.5500 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>10.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.1500 2.0000 0.9000</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.1500 2.0000 0.9000</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.860 0.840 0.780 1.00</ambient>
+            <diffuse>0.860 0.840 0.780 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="floor_warehouse_upper">
+      <static>true</static>
+      <pose>14.4000 24.0000 -0.0500 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>100.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>28.8000 12.0000 0.1000</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>28.8000 12.0000 0.1000</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.400 0.400 0.420 1.00</ambient>
+            <diffuse>0.400 0.400 0.420 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="floor_warehouse_lower">
+      <static>true</static>
+      <pose>9.9000 9.0000 -0.0500 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>100.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>19.8000 18.0000 0.1000</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>19.8000 18.0000 0.1000</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.400 0.400 0.420 1.00</ambient>
+            <diffuse>0.400 0.400 0.420 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="floor_storage_upper">
+      <static>true</static>
+      <pose>26.1000 12.9000 -0.0500 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>100.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>12.6000 10.2000 0.1000</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>12.6000 10.2000 0.1000</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.460 0.440 0.400 1.00</ambient>
+            <diffuse>0.460 0.440 0.400 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="floor_storage_lower">
+      <static>true</static>
+      <pose>30.0000 -2.7000 -0.0500 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>100.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>20.4000 21.0000 0.1000</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>20.4000 21.0000 0.1000</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.460 0.440 0.400 1.00</ambient>
+            <diffuse>0.460 0.440 0.400 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="floor_office_upper">
+      <static>true</static>
+      <pose>37.8000 27.0000 -0.0500 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>100.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>18.0000 18.0000 0.1000</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>18.0000 18.0000 0.1000</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.500 0.470 0.420 1.00</ambient>
+            <diffuse>0.500 0.470 0.420 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="floor_office_lower">
+      <static>true</static>
+      <pose>39.6000 12.9000 -0.0500 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>100.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>14.4000 10.2000 0.1000</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>14.4000 10.2000 0.1000</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.500 0.470 0.420 1.00</ambient>
+            <diffuse>0.500 0.470 0.420 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="loading_area_pad">
+      <static>true</static>
+      <pose>6.0000 25.2000 0.0010 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>5.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>9.6000 9.6000</size>
+            </plane>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>9.6000 9.6000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0.850 0.700 0.100 1.00</ambient>
+            <diffuse>0.850 0.700 0.100 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="loading_box_base_1">
+      <static>true</static>
+      <pose>3.3000 22.5000 0.2000 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>8.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>2.4000 2.4000 0.4000</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>2.4000 2.4000 0.4000</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.680 0.520 0.320 1.00</ambient>
+            <diffuse>0.680 0.520 0.320 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="loading_box_base_2">
+      <static>true</static>
+      <pose>6.0000 22.5000 0.2000 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>8.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>2.4000 2.4000 0.4000</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>2.4000 2.4000 0.4000</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.680 0.520 0.320 1.00</ambient>
+            <diffuse>0.680 0.520 0.320 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="loading_box_base_3">
+      <static>true</static>
+      <pose>8.7000 22.5000 0.2000 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>8.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>2.4000 2.4000 0.4000</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>2.4000 2.4000 0.4000</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.680 0.520 0.320 1.00</ambient>
+            <diffuse>0.680 0.520 0.320 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="loading_box_base_4">
+      <static>true</static>
+      <pose>3.3000 25.2000 0.2000 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>8.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>2.4000 2.4000 0.4000</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>2.4000 2.4000 0.4000</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.680 0.520 0.320 1.00</ambient>
+            <diffuse>0.680 0.520 0.320 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="loading_box_base_5">
+      <static>true</static>
+      <pose>6.0000 25.2000 0.2000 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>8.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>2.4000 2.4000 0.4000</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>2.4000 2.4000 0.4000</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.680 0.520 0.320 1.00</ambient>
+            <diffuse>0.680 0.520 0.320 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="loading_box_base_6">
+      <static>true</static>
+      <pose>8.7000 25.2000 0.2000 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>8.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>2.4000 2.4000 0.4000</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>2.4000 2.4000 0.4000</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.680 0.520 0.320 1.00</ambient>
+            <diffuse>0.680 0.520 0.320 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="loading_box_base_7">
+      <static>true</static>
+      <pose>3.3000 27.9000 0.2000 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>8.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>2.4000 2.4000 0.4000</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>2.4000 2.4000 0.4000</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.680 0.520 0.320 1.00</ambient>
+            <diffuse>0.680 0.520 0.320 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="loading_box_base_8">
+      <static>true</static>
+      <pose>6.0000 27.9000 0.2000 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>8.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>2.4000 2.4000 0.4000</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>2.4000 2.4000 0.4000</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.680 0.520 0.320 1.00</ambient>
+            <diffuse>0.680 0.520 0.320 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="loading_box_base_9">
+      <static>true</static>
+      <pose>8.7000 27.9000 0.2000 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>8.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>2.4000 2.4000 0.4000</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>2.4000 2.4000 0.4000</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.680 0.520 0.320 1.00</ambient>
+            <diffuse>0.680 0.520 0.320 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="loading_box_mid_1">
+      <static>true</static>
+      <pose>4.6500 23.8500 0.6000 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>8.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>2.4000 2.4000 0.4000</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>2.4000 2.4000 0.4000</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.680 0.520 0.320 1.00</ambient>
+            <diffuse>0.680 0.520 0.320 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="loading_box_mid_2">
+      <static>true</static>
+      <pose>7.3500 23.8500 0.6000 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>8.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>2.4000 2.4000 0.4000</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>2.4000 2.4000 0.4000</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.680 0.520 0.320 1.00</ambient>
+            <diffuse>0.680 0.520 0.320 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="loading_box_mid_3">
+      <static>true</static>
+      <pose>4.6500 26.5500 0.6000 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>8.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>2.4000 2.4000 0.4000</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>2.4000 2.4000 0.4000</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.680 0.520 0.320 1.00</ambient>
+            <diffuse>0.680 0.520 0.320 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="loading_box_mid_4">
+      <static>true</static>
+      <pose>7.3500 26.5500 0.6000 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>8.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>2.4000 2.4000 0.4000</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>2.4000 2.4000 0.4000</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.680 0.520 0.320 1.00</ambient>
+            <diffuse>0.680 0.520 0.320 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="loading_box_top_1">
+      <static>true</static>
+      <pose>6.0000 25.2000 1.0000 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>8.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>2.4000 2.4000 0.4000</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>2.4000 2.4000 0.4000</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.680 0.520 0.320 1.00</ambient>
+            <diffuse>0.680 0.520 0.320 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="machine_1">
+      <static>true</static>
+      <pose>9.9000 12.4500 0.5000 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>250.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>12.0000 6.0000 1.0000</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>12.0000 6.0000 1.0000</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.550 0.100 0.100 1.00</ambient>
+            <diffuse>0.550 0.100 0.100 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="machine_1_panel">
+      <static>true</static>
+      <pose>9.9000 15.6000 1.1500 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>2.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1.5000 0.3000 0.3000</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>1.5000 0.3000 0.3000</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.100 0.100 0.100 1.00</ambient>
+            <diffuse>0.100 0.100 0.100 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="machine_2">
+      <static>true</static>
+      <pose>9.9000 5.2500 0.6500 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>300.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>9.6000 5.4000 1.3000</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>9.6000 5.4000 1.3000</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.100 0.200 0.500 1.00</ambient>
+            <diffuse>0.100 0.200 0.500 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="machine_2_panel">
+      <static>true</static>
+      <pose>9.9000 8.1000 1.4500 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>2.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1.5000 0.3000 0.3000</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>1.5000 0.3000 0.3000</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.100 0.100 0.100 1.00</ambient>
+            <diffuse>0.100 0.100 0.100 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="cupboard">
+      <static>true</static>
+      <pose>26.4000 12.4000 1.0000 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>60.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>7.2000 3.0000 2.0000</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>7.2000 3.0000 2.0000</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.420 0.280 0.150 1.00</ambient>
+            <diffuse>0.420 0.280 0.150 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="cupboard_handle_1">
+      <static>true</static>
+      <pose>25.5000 10.8100 1.0000 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>0.2</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.1800 0.1800 0.1500</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.1800 0.1800 0.1500</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.200 0.130 0.070 1.00</ambient>
+            <diffuse>0.200 0.130 0.070 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="cupboard_handle_2">
+      <static>true</static>
+      <pose>27.3000 10.8100 1.0000 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>0.2</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.1800 0.1800 0.1500</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.1800 0.1800 0.1500</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.200 0.130 0.070 1.00</ambient>
+            <diffuse>0.200 0.130 0.070 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="rack_storage_1_post1">
+      <static>true</static>
+      <pose>32.1600 0.6600 1.2500 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>4.0</mass>
+          <inertia>
+            <ixx>0.01</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.01</iyy><iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.2400</radius>
+              <length>2.5000</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.2400</radius>
+              <length>2.5000</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.450 0.470 0.500 1.00</ambient>
+            <diffuse>0.450 0.470 0.500 1.00</diffuse>
+            <specular>0.2 0.2 0.2 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="rack_storage_1_post2">
+      <static>true</static>
+      <pose>32.1600 -1.8600 1.2500 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>4.0</mass>
+          <inertia>
+            <ixx>0.01</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.01</iyy><iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.2400</radius>
+              <length>2.5000</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.2400</radius>
+              <length>2.5000</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.450 0.470 0.500 1.00</ambient>
+            <diffuse>0.450 0.470 0.500 1.00</diffuse>
+            <specular>0.2 0.2 0.2 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="rack_storage_1_post3">
+      <static>true</static>
+      <pose>23.0400 0.6600 1.2500 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>4.0</mass>
+          <inertia>
+            <ixx>0.01</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.01</iyy><iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.2400</radius>
+              <length>2.5000</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.2400</radius>
+              <length>2.5000</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.450 0.470 0.500 1.00</ambient>
+            <diffuse>0.450 0.470 0.500 1.00</diffuse>
+            <specular>0.2 0.2 0.2 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="rack_storage_1_post4">
+      <static>true</static>
+      <pose>23.0400 -1.8600 1.2500 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>4.0</mass>
+          <inertia>
+            <ixx>0.01</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.01</iyy><iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.2400</radius>
+              <length>2.5000</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.2400</radius>
+              <length>2.5000</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.450 0.470 0.500 1.00</ambient>
+            <diffuse>0.450 0.470 0.500 1.00</diffuse>
+            <specular>0.2 0.2 0.2 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="rack_storage_1_shelf1">
+      <static>true</static>
+      <pose>27.6000 -0.6000 0.5950 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>6.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>9.3000 2.7000 0.0300</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>9.3000 2.7000 0.0300</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.600 0.600 0.620 1.00</ambient>
+            <diffuse>0.600 0.600 0.620 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="rack_storage_1_shelf2">
+      <static>true</static>
+      <pose>27.6000 -0.6000 1.2200 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>6.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>9.3000 2.7000 0.0300</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>9.3000 2.7000 0.0300</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.600 0.600 0.620 1.00</ambient>
+            <diffuse>0.600 0.600 0.620 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="rack_storage_1_shelf3">
+      <static>true</static>
+      <pose>27.6000 -0.6000 1.8450 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>6.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>9.3000 2.7000 0.0300</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>9.3000 2.7000 0.0300</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.600 0.600 0.620 1.00</ambient>
+            <diffuse>0.600 0.600 0.620 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="rack_storage_1_shelf4">
+      <static>true</static>
+      <pose>27.6000 -0.6000 2.4700 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>6.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>9.3000 2.7000 0.0300</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>9.3000 2.7000 0.0300</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.600 0.600 0.620 1.00</ambient>
+            <diffuse>0.600 0.600 0.620 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="rack_storage_2_post1">
+      <static>true</static>
+      <pose>32.1600 -6.9900 1.2500 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>4.0</mass>
+          <inertia>
+            <ixx>0.01</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.01</iyy><iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.2400</radius>
+              <length>2.5000</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.2400</radius>
+              <length>2.5000</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.450 0.470 0.500 1.00</ambient>
+            <diffuse>0.450 0.470 0.500 1.00</diffuse>
+            <specular>0.2 0.2 0.2 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="rack_storage_2_post2">
+      <static>true</static>
+      <pose>32.1600 -9.5100 1.2500 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>4.0</mass>
+          <inertia>
+            <ixx>0.01</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.01</iyy><iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.2400</radius>
+              <length>2.5000</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.2400</radius>
+              <length>2.5000</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.450 0.470 0.500 1.00</ambient>
+            <diffuse>0.450 0.470 0.500 1.00</diffuse>
+            <specular>0.2 0.2 0.2 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="rack_storage_2_post3">
+      <static>true</static>
+      <pose>23.0400 -6.9900 1.2500 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>4.0</mass>
+          <inertia>
+            <ixx>0.01</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.01</iyy><iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.2400</radius>
+              <length>2.5000</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.2400</radius>
+              <length>2.5000</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.450 0.470 0.500 1.00</ambient>
+            <diffuse>0.450 0.470 0.500 1.00</diffuse>
+            <specular>0.2 0.2 0.2 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="rack_storage_2_post4">
+      <static>true</static>
+      <pose>23.0400 -9.5100 1.2500 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>4.0</mass>
+          <inertia>
+            <ixx>0.01</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.01</iyy><iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.2400</radius>
+              <length>2.5000</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.2400</radius>
+              <length>2.5000</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.450 0.470 0.500 1.00</ambient>
+            <diffuse>0.450 0.470 0.500 1.00</diffuse>
+            <specular>0.2 0.2 0.2 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="rack_storage_2_shelf1">
+      <static>true</static>
+      <pose>27.6000 -8.2500 0.5950 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>6.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>9.3000 2.7000 0.0300</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>9.3000 2.7000 0.0300</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.600 0.600 0.620 1.00</ambient>
+            <diffuse>0.600 0.600 0.620 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="rack_storage_2_shelf2">
+      <static>true</static>
+      <pose>27.6000 -8.2500 1.2200 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>6.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>9.3000 2.7000 0.0300</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>9.3000 2.7000 0.0300</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.600 0.600 0.620 1.00</ambient>
+            <diffuse>0.600 0.600 0.620 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="rack_storage_2_shelf3">
+      <static>true</static>
+      <pose>27.6000 -8.2500 1.8450 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>6.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>9.3000 2.7000 0.0300</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>9.3000 2.7000 0.0300</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.600 0.600 0.620 1.00</ambient>
+            <diffuse>0.600 0.600 0.620 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="rack_storage_2_shelf4">
+      <static>true</static>
+      <pose>27.6000 -8.2500 2.4700 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>6.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>9.3000 2.7000 0.0300</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>9.3000 2.7000 0.0300</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.600 0.600 0.620 1.00</ambient>
+            <diffuse>0.600 0.600 0.620 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="rack_storage_vertical_post1">
+      <static>true</static>
+      <pose>39.0600 3.0600 1.2500 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>4.0</mass>
+          <inertia>
+            <ixx>0.01</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.01</iyy><iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.2400</radius>
+              <length>2.5000</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.2400</radius>
+              <length>2.5000</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.450 0.470 0.500 1.00</ambient>
+            <diffuse>0.450 0.470 0.500 1.00</diffuse>
+            <specular>0.2 0.2 0.2 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="rack_storage_vertical_post2">
+      <static>true</static>
+      <pose>39.0600 -7.8600 1.2500 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>4.0</mass>
+          <inertia>
+            <ixx>0.01</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.01</iyy><iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.2400</radius>
+              <length>2.5000</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.2400</radius>
+              <length>2.5000</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.450 0.470 0.500 1.00</ambient>
+            <diffuse>0.450 0.470 0.500 1.00</diffuse>
+            <specular>0.2 0.2 0.2 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="rack_storage_vertical_post3">
+      <static>true</static>
+      <pose>36.5400 3.0600 1.2500 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>4.0</mass>
+          <inertia>
+            <ixx>0.01</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.01</iyy><iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.2400</radius>
+              <length>2.5000</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.2400</radius>
+              <length>2.5000</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.450 0.470 0.500 1.00</ambient>
+            <diffuse>0.450 0.470 0.500 1.00</diffuse>
+            <specular>0.2 0.2 0.2 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="rack_storage_vertical_post4">
+      <static>true</static>
+      <pose>36.5400 -7.8600 1.2500 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>4.0</mass>
+          <inertia>
+            <ixx>0.01</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.01</iyy><iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.2400</radius>
+              <length>2.5000</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.2400</radius>
+              <length>2.5000</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.450 0.470 0.500 1.00</ambient>
+            <diffuse>0.450 0.470 0.500 1.00</diffuse>
+            <specular>0.2 0.2 0.2 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="rack_storage_vertical_shelf1">
+      <static>true</static>
+      <pose>37.8000 -2.4000 0.5950 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>6.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>2.7000 11.1000 0.0300</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>2.7000 11.1000 0.0300</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.600 0.600 0.620 1.00</ambient>
+            <diffuse>0.600 0.600 0.620 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="rack_storage_vertical_shelf2">
+      <static>true</static>
+      <pose>37.8000 -2.4000 1.2200 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>6.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>2.7000 11.1000 0.0300</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>2.7000 11.1000 0.0300</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.600 0.600 0.620 1.00</ambient>
+            <diffuse>0.600 0.600 0.620 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="rack_storage_vertical_shelf3">
+      <static>true</static>
+      <pose>37.8000 -2.4000 1.8450 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>6.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>2.7000 11.1000 0.0300</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>2.7000 11.1000 0.0300</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.600 0.600 0.620 1.00</ambient>
+            <diffuse>0.600 0.600 0.620 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="rack_storage_vertical_shelf4">
+      <static>true</static>
+      <pose>37.8000 -2.4000 2.4700 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>6.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>2.7000 11.1000 0.0300</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>2.7000 11.1000 0.0300</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.600 0.600 0.620 1.00</ambient>
+            <diffuse>0.600 0.600 0.620 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="table_3_top">
+      <static>true</static>
+      <pose>38.4000 29.4000 0.7250 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>8.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1.4000 0.7000 0.0500</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>1.4000 0.7000 0.0500</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.550 0.360 0.200 1.00</ambient>
+            <diffuse>0.550 0.360 0.200 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="table_3_leg1">
+      <static>true</static>
+      <pose>39.0500 29.7000 0.3500 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>1.0</mass>
+          <inertia>
+            <ixx>0.01</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.01</iyy><iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.0300</radius>
+              <length>0.7000</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.0300</radius>
+              <length>0.7000</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.250 0.170 0.100 1.00</ambient>
+            <diffuse>0.250 0.170 0.100 1.00</diffuse>
+            <specular>0.2 0.2 0.2 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="table_3_leg2">
+      <static>true</static>
+      <pose>39.0500 29.1000 0.3500 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>1.0</mass>
+          <inertia>
+            <ixx>0.01</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.01</iyy><iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.0300</radius>
+              <length>0.7000</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.0300</radius>
+              <length>0.7000</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.250 0.170 0.100 1.00</ambient>
+            <diffuse>0.250 0.170 0.100 1.00</diffuse>
+            <specular>0.2 0.2 0.2 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="table_3_leg3">
+      <static>true</static>
+      <pose>37.7500 29.7000 0.3500 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>1.0</mass>
+          <inertia>
+            <ixx>0.01</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.01</iyy><iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.0300</radius>
+              <length>0.7000</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.0300</radius>
+              <length>0.7000</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.250 0.170 0.100 1.00</ambient>
+            <diffuse>0.250 0.170 0.100 1.00</diffuse>
+            <specular>0.2 0.2 0.2 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="table_3_leg4">
+      <static>true</static>
+      <pose>37.7500 29.1000 0.3500 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>1.0</mass>
+          <inertia>
+            <ixx>0.01</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.01</iyy><iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.0300</radius>
+              <length>0.7000</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.0300</radius>
+              <length>0.7000</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.250 0.170 0.100 1.00</ambient>
+            <diffuse>0.250 0.170 0.100 1.00</diffuse>
+            <specular>0.2 0.2 0.2 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="chair_3_seat">
+      <static>true</static>
+      <pose>38.4000 30.2750 0.4250 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>3.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.4500 0.4500 0.0500</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.4500 0.4500 0.0500</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.160 0.320 0.550 1.00</ambient>
+            <diffuse>0.160 0.320 0.550 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="chair_3_leg1">
+      <static>true</static>
+      <pose>38.5950 30.4700 0.2000 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>0.5</mass>
+          <inertia>
+            <ixx>0.01</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.01</iyy><iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.0200</radius>
+              <length>0.4000</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.0200</radius>
+              <length>0.4000</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.100 0.100 0.100 1.00</ambient>
+            <diffuse>0.100 0.100 0.100 1.00</diffuse>
+            <specular>0.2 0.2 0.2 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="chair_3_leg2">
+      <static>true</static>
+      <pose>38.5950 30.0800 0.2000 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>0.5</mass>
+          <inertia>
+            <ixx>0.01</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.01</iyy><iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.0200</radius>
+              <length>0.4000</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.0200</radius>
+              <length>0.4000</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.100 0.100 0.100 1.00</ambient>
+            <diffuse>0.100 0.100 0.100 1.00</diffuse>
+            <specular>0.2 0.2 0.2 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="chair_3_leg3">
+      <static>true</static>
+      <pose>38.2050 30.4700 0.2000 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>0.5</mass>
+          <inertia>
+            <ixx>0.01</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.01</iyy><iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.0200</radius>
+              <length>0.4000</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.0200</radius>
+              <length>0.4000</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.100 0.100 0.100 1.00</ambient>
+            <diffuse>0.100 0.100 0.100 1.00</diffuse>
+            <specular>0.2 0.2 0.2 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="chair_3_leg4">
+      <static>true</static>
+      <pose>38.2050 30.0800 0.2000 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>0.5</mass>
+          <inertia>
+            <ixx>0.01</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.01</iyy><iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.0200</radius>
+              <length>0.4000</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.0200</radius>
+              <length>0.4000</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.100 0.100 0.100 1.00</ambient>
+            <diffuse>0.100 0.100 0.100 1.00</diffuse>
+            <specular>0.2 0.2 0.2 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="chair_3_backrest">
+      <static>true</static>
+      <pose>38.4000 30.4750 0.6500 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>1.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.4500 0.0500 0.4000</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.4500 0.0500 0.4000</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.160 0.320 0.550 1.00</ambient>
+            <diffuse>0.160 0.320 0.550 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="table_4_top">
+      <static>true</static>
+      <pose>38.1000 19.8000 0.7250 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>8.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.7000 1.6000 0.0500</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.7000 1.6000 0.0500</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.550 0.360 0.200 1.00</ambient>
+            <diffuse>0.550 0.360 0.200 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="table_4_leg1">
+      <static>true</static>
+      <pose>38.4000 20.5500 0.3500 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>1.0</mass>
+          <inertia>
+            <ixx>0.01</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.01</iyy><iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.0300</radius>
+              <length>0.7000</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.0300</radius>
+              <length>0.7000</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.250 0.170 0.100 1.00</ambient>
+            <diffuse>0.250 0.170 0.100 1.00</diffuse>
+            <specular>0.2 0.2 0.2 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="table_4_leg2">
+      <static>true</static>
+      <pose>38.4000 19.0500 0.3500 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>1.0</mass>
+          <inertia>
+            <ixx>0.01</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.01</iyy><iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.0300</radius>
+              <length>0.7000</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.0300</radius>
+              <length>0.7000</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.250 0.170 0.100 1.00</ambient>
+            <diffuse>0.250 0.170 0.100 1.00</diffuse>
+            <specular>0.2 0.2 0.2 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="table_4_leg3">
+      <static>true</static>
+      <pose>37.8000 20.5500 0.3500 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>1.0</mass>
+          <inertia>
+            <ixx>0.01</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.01</iyy><iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.0300</radius>
+              <length>0.7000</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.0300</radius>
+              <length>0.7000</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.250 0.170 0.100 1.00</ambient>
+            <diffuse>0.250 0.170 0.100 1.00</diffuse>
+            <specular>0.2 0.2 0.2 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="table_4_leg4">
+      <static>true</static>
+      <pose>37.8000 19.0500 0.3500 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>1.0</mass>
+          <inertia>
+            <ixx>0.01</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.01</iyy><iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.0300</radius>
+              <length>0.7000</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.0300</radius>
+              <length>0.7000</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.250 0.170 0.100 1.00</ambient>
+            <diffuse>0.250 0.170 0.100 1.00</diffuse>
+            <specular>0.2 0.2 0.2 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="chair_4_seat">
+      <static>true</static>
+      <pose>38.9750 19.8000 0.4250 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>3.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.4500 0.4500 0.0500</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.4500 0.4500 0.0500</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.160 0.320 0.550 1.00</ambient>
+            <diffuse>0.160 0.320 0.550 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="chair_4_leg1">
+      <static>true</static>
+      <pose>39.1700 19.9950 0.2000 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>0.5</mass>
+          <inertia>
+            <ixx>0.01</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.01</iyy><iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.0200</radius>
+              <length>0.4000</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.0200</radius>
+              <length>0.4000</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.100 0.100 0.100 1.00</ambient>
+            <diffuse>0.100 0.100 0.100 1.00</diffuse>
+            <specular>0.2 0.2 0.2 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="chair_4_leg2">
+      <static>true</static>
+      <pose>39.1700 19.6050 0.2000 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>0.5</mass>
+          <inertia>
+            <ixx>0.01</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.01</iyy><iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.0200</radius>
+              <length>0.4000</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.0200</radius>
+              <length>0.4000</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.100 0.100 0.100 1.00</ambient>
+            <diffuse>0.100 0.100 0.100 1.00</diffuse>
+            <specular>0.2 0.2 0.2 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="chair_4_leg3">
+      <static>true</static>
+      <pose>38.7800 19.9950 0.2000 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>0.5</mass>
+          <inertia>
+            <ixx>0.01</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.01</iyy><iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.0200</radius>
+              <length>0.4000</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.0200</radius>
+              <length>0.4000</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.100 0.100 0.100 1.00</ambient>
+            <diffuse>0.100 0.100 0.100 1.00</diffuse>
+            <specular>0.2 0.2 0.2 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="chair_4_leg4">
+      <static>true</static>
+      <pose>38.7800 19.6050 0.2000 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>0.5</mass>
+          <inertia>
+            <ixx>0.01</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.01</iyy><iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.0200</radius>
+              <length>0.4000</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.0200</radius>
+              <length>0.4000</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.100 0.100 0.100 1.00</ambient>
+            <diffuse>0.100 0.100 0.100 1.00</diffuse>
+            <specular>0.2 0.2 0.2 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="chair_4_backrest">
+      <static>true</static>
+      <pose>39.1750 19.8000 0.6500 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>1.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.0500 0.4500 0.4000</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.0500 0.4500 0.4000</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.160 0.320 0.550 1.00</ambient>
+            <diffuse>0.160 0.320 0.550 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="rack_office_post1">
+      <static>true</static>
+      <pose>44.0600 25.8600 1.2500 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>4.0</mass>
+          <inertia>
+            <ixx>0.01</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.01</iyy><iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.2400</radius>
+              <length>2.5000</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.2400</radius>
+              <length>2.5000</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.450 0.470 0.500 1.00</ambient>
+            <diffuse>0.450 0.470 0.500 1.00</diffuse>
+            <specular>0.2 0.2 0.2 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="rack_office_post2">
+      <static>true</static>
+      <pose>44.0600 23.3400 1.2500 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>4.0</mass>
+          <inertia>
+            <ixx>0.01</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.01</iyy><iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.2400</radius>
+              <length>2.5000</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.2400</radius>
+              <length>2.5000</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.450 0.470 0.500 1.00</ambient>
+            <diffuse>0.450 0.470 0.500 1.00</diffuse>
+            <specular>0.2 0.2 0.2 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="rack_office_post3">
+      <static>true</static>
+      <pose>37.3400 25.8600 1.2500 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>4.0</mass>
+          <inertia>
+            <ixx>0.01</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.01</iyy><iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.2400</radius>
+              <length>2.5000</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.2400</radius>
+              <length>2.5000</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.450 0.470 0.500 1.00</ambient>
+            <diffuse>0.450 0.470 0.500 1.00</diffuse>
+            <specular>0.2 0.2 0.2 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="rack_office_post4">
+      <static>true</static>
+      <pose>37.3400 23.3400 1.2500 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>4.0</mass>
+          <inertia>
+            <ixx>0.01</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.01</iyy><iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.2400</radius>
+              <length>2.5000</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.2400</radius>
+              <length>2.5000</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.450 0.470 0.500 1.00</ambient>
+            <diffuse>0.450 0.470 0.500 1.00</diffuse>
+            <specular>0.2 0.2 0.2 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="rack_office_shelf1">
+      <static>true</static>
+      <pose>40.7000 24.6000 0.5950 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>6.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>6.9000 2.7000 0.0300</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>6.9000 2.7000 0.0300</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.600 0.600 0.620 1.00</ambient>
+            <diffuse>0.600 0.600 0.620 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="rack_office_shelf2">
+      <static>true</static>
+      <pose>40.7000 24.6000 1.2200 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>6.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>6.9000 2.7000 0.0300</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>6.9000 2.7000 0.0300</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.600 0.600 0.620 1.00</ambient>
+            <diffuse>0.600 0.600 0.620 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="rack_office_shelf3">
+      <static>true</static>
+      <pose>40.7000 24.6000 1.8450 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>6.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>6.9000 2.7000 0.0300</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>6.9000 2.7000 0.0300</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.600 0.600 0.620 1.00</ambient>
+            <diffuse>0.600 0.600 0.620 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="rack_office_shelf4">
+      <static>true</static>
+      <pose>40.7000 24.6000 2.4700 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <inertial>
+          <mass>6.0</mass>
+          <inertia>
+            <ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz>
+            <iyy>0.1</iyy><iyz>0</iyz>
+            <izz>0.1</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>6.9000 2.7000 0.0300</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.8</mu>
+                <mu2>0.8</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>6.9000 2.7000 0.0300</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.600 0.600 0.620 1.00</ambient>
+            <diffuse>0.600 0.600 0.620 1.00</diffuse>
+            <specular>0.15 0.15 0.15 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+     <!-- ========== WASTE MARKER STANDS ========== -->
+<!-- These are small stands where ArUco markers will be placed -->
+<!-- Distributed across the three rooms: stands 1-3 = Warehouse, -->
+<!-- stands 4-6 = Storage Room, stands 7-8 = Office. -->
+
+    <model name="marker_stand_1">
+      <static>true</static>
+      <pose>2.5000 18.5000 0.5000 0.0000 0.0000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box><size>0.15 0.15 1</size></box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box><size>0.15 0.15 1</size></box>
+          </geometry>
+          <material>
+            <ambient>1 0 0 1</ambient>
+            <diffuse>1 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="marker_stand_2">
+      <static>true</static>
+      <pose>17 3 0.5 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box><size>0.15 0.15 1</size></box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box><size>0.15 0.15 1</size></box>
+          </geometry>
+          <material>
+            <ambient>1 0 0 1</ambient>
+            <diffuse>1 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="marker_stand_3">
+      <static>true</static>
+      <pose>23 20 0.5 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box><size>0.15 0.15 1</size></box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box><size>0.15 0.15 1</size></box>
+          </geometry>
+          <material>
+            <ambient>1 0 0 1</ambient>
+            <diffuse>1 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="marker_stand_4">
+      <static>true</static>
+      <pose>21 15 0.5 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box><size>0.15 0.15 1</size></box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box><size>0.15 0.15 1</size></box>
+          </geometry>
+          <material>
+            <ambient>1 0 0 1</ambient>
+            <diffuse>1 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="marker_stand_5">
+      <static>true</static>
+      <pose>34 5 0.5 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box><size>0.15 0.15 1</size></box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box><size>0.15 0.15 1</size></box>
+          </geometry>
+          <material>
+            <ambient>1 0 0 1</ambient>
+            <diffuse>1 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="marker_stand_6">
+      <static>true</static>
+      <pose>39 -10 0.5 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box><size>0.15 0.15 1</size></box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box><size>0.15 0.15 1</size></box>
+          </geometry>
+          <material>
+            <ambient>1 0 0 1</ambient>
+            <diffuse>1 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="marker_stand_7">
+      <static>true</static>
+      <pose>44 33 0.5 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box><size>0.15 0.15 1</size></box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box><size>0.15 0.15 1</size></box>
+          </geometry>
+          <material>
+            <ambient>1 0 0 1</ambient>
+            <diffuse>1 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="marker_stand_8">
+      <static>true</static>
+      <pose>35 9 0.5 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box><size>0.15 0.15 1</size></box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box><size>0.15 0.15 1</size></box>
+          </geometry>
+          <material>
+            <ambient>1 0 0 1</ambient>
+            <diffuse>1 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="marker_stand_9">
+      <static>true</static>
+      <pose>12 26 0.5 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box><size>0.15 0.15 1</size></box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box><size>0.15 0.15 1</size></box>
+          </geometry>
+          <material>
+            <ambient>1 0 0 1</ambient>
+            <diffuse>1 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="marker_stand_10">
+      <static>true</static>
+      <pose>25 -4 0.5 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box><size>0.15 0.15 1</size></box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box><size>0.15 0.15 1</size></box>
+          </geometry>
+          <material>
+            <ambient>1 0 0 1</ambient>
+            <diffuse>1 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="marker_stand_11">
+      <static>true</static>
+      <pose>31 34 0.5 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box><size>0.15 0.15 1</size></box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box><size>0.15 0.15 1</size></box>
+          </geometry>
+          <material>
+            <ambient>1 0 0 1</ambient>
+            <diffuse>1 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="marker_stand_12">
+      <static>true</static>
+      <pose>44 12 0.5 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box><size>0.15 0.15 1</size></box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box><size>0.15 0.15 1</size></box>
+          </geometry>
+          <material>
+            <ambient>1 0 0 1</ambient>
+            <diffuse>1 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+<!-- ========== ARUCO MARKER MODELS ========== -->
+<!-- Positions unchanged. Yaw corrected to strictly follow the original
+     rule: X-axis offset -> yaw = -90 deg (if moved +X) or +90 deg (if
+     moved -X); Y-axis offset -> yaw = 0 deg, always. This is the exact
+     pattern in the original 6-marker file, so each marker now sits flush
+     against one vertical face of its pole, matching all 8 poles. -->
+
+<include>
+  <uri>model://aruco_marker_0</uri>
+  <name>aruco_0</name>
+  <pose>2.575 18.5 0.5 0 0 -1.5708</pose>
+</include>
+<include>
+  <uri>model://aruco_marker_1</uri>
+  <name>aruco_1</name>
+  <pose>17 3.075 0.5 0 0 0</pose>
+</include>
+<include>
+  <uri>model://aruco_marker_2</uri>
+  <name>aruco_2</name>
+  <pose>22.925 20 0.5 0 0 1.5708</pose>
+</include>
+<include>
+  <uri>model://aruco_marker_3</uri>
+  <name>aruco_3</name>
+  <pose>21 14.925 0.5 0 0 0</pose>
+</include>
+<include>
+  <uri>model://aruco_marker_4</uri>
+  <name>aruco_4</name>
+  <pose>33.925 5 0.5 0 0 1.5708</pose>
+</include>
+<include>
+  <uri>model://aruco_marker_5</uri>
+  <name>aruco_5</name>
+  <pose>38.925 -10 0.5 0 0 1.5708</pose>
+</include>
+<include>
+  <uri>model://aruco_marker_6</uri>
+  <name>aruco_6</name>
+  <pose>43.925 33 0.5 0 0 1.5708</pose>
+</include>
+<include>
+  <uri>model://aruco_marker_7</uri>
+  <name>aruco_7</name>
+  <pose>35 9.075 0.5 0 0 0</pose>
+</include>
+
+<include>
+  <uri>model://aruco_marker_8</uri>
+  <name>aruco_8</name>
+  <pose>12 25.925 0.5 0 0 3.14159</pose>
+</include>
+<include>
+  <uri>model://aruco_marker_9</uri>
+  <name>aruco_9</name>
+  <pose>25.075 -4 0.5 0 0 -1.5708</pose>
+</include>
+<include>
+  <uri>model://aruco_marker_10</uri>
+  <name>aruco_10</name>
+  <pose>31 33.925 0.5 0 0 0</pose>
+</include>
+<include>
+  <uri>model://aruco_marker_11</uri>
+  <name>aruco_11</name>
+  <pose>43.925 12 0.5 0 0 1.5708</pose>
+</include>
+
+<!-- ========== OBJECT TEXT LABELS ========== -->
+<!-- Requires the warehouse_labels folder to be placed in your Gazebo
+     model path, e.g. ~/ros2_ws/src/IITISoC/models/warehouse_labels -->
+<include>
+  <uri>model://warehouse_labels</uri>
+  <name>warehouse_labels</name>
+  <pose>0 0 0 0 0 0</pose>
+</include>
+
+  </world>
+</sdf>
