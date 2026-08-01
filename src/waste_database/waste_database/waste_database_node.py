@@ -22,6 +22,7 @@ Design note on duplicate prevention:
 
 import math
 import threading
+import traceback
 
 import rclpy
 from rclpy.node import Node
@@ -124,56 +125,64 @@ class WasteDatabaseNode(Node):
     # Service: RegisterDetection
     # ----------------------------------------------------------------- #
     def handle_register_detection(self, request, response):
-        with self.lock:
-            marker_id = request.marker_id
-            now = self.get_clock().now().to_msg()
+        try:
+            with self.lock:
+                marker_id = request.marker_id
+                now = self.get_clock().now().to_msg()
 
-            if marker_id in self.targets:
-                # Already known -> this is a duplicate detection of the same
-                # physical target. Refine its stored position with a
-                # confidence-weighted average instead of adding a new entry.
-                target = self.targets[marker_id]
-                old_conf = target['confidence']
-                new_conf = request.confidence
-                total = old_conf + new_conf
-                w_old, w_new = (old_conf / total, new_conf / total) if total > 0 else (0.5, 0.5)
+                if marker_id in self.targets:
+                    # Already known -> this is a duplicate detection of the same
+                    # physical target. Refine its stored position with a
+                    # confidence-weighted average instead of adding a new entry.
+                    target = self.targets[marker_id]
+                    old_conf = target['confidence']
+                    new_conf = request.confidence
+                    total = old_conf + new_conf
+                    w_old, w_new = (old_conf / total, new_conf / total) if total > 0 else (0.5, 0.5)
 
-                target['position'].x = w_old * target['position'].x + w_new * request.position.x
-                target['position'].y = w_old * target['position'].y + w_new * request.position.y
-                target['position'].z = w_old * target['position'].z + w_new * request.position.z
-                target['confidence'] = max(old_conf, new_conf)
-                target['last_seen'] = now
-                target['last_detected_by'] = request.robot_name
-                target['detection_count'] += 1
+                    target['position'].x = w_old * target['position'].x + w_new * request.position.x
+                    target['position'].y = w_old * target['position'].y + w_new * request.position.y
+                    target['position'].z = w_old * target['position'].z + w_new * request.position.z
+                    target['confidence'] = max(old_conf, new_conf)
+                    target['last_seen'] = now
+                    target['last_detected_by'] = request.robot_name
+                    target['detection_count'] += 1
 
-                response.accepted = True
-                response.is_duplicate = True
-                response.target_id = marker_id
-                response.message = (
-                    f'Target {marker_id} already known (seen '
-                    f'{target["detection_count"]}x) - position refined, no new entry created.'
-                )
-                self.get_logger().info(f'{C.YELLOW}{response.message}{C.RESET}')
-                self.targets[marker_id] = {
-                    'position': Point(x=request.position.x,
-                                       y=request.position.y,
-                                       z=request.position.z),
-                    'waste_type': request.waste_type,
-                    'status': 'PENDING',
-                    'confidence': request.confidence,
-                    'first_detected_by': request.robot_name,
-                    'last_detected_by': request.robot_name,
-                    'detection_count': 1,
-                    'assigned_robot': '',
-                    'collected_by': '',
-                    'first_seen': now,
-                    'last_seen': now,
-                }
-                response.accepted = True
-                response.is_duplicate = False
-                response.target_id = marker_id
-                response.message = f'New target {marker_id} registered by {request.robot_name}.'
-                self.get_logger().info(f'{C.GREEN}{response.message}{C.RESET}')
+                    response.accepted = True
+                    response.is_duplicate = True
+                    response.target_id = marker_id
+                    response.message = (
+                        f'Target {marker_id} already known (seen '
+                        f'{target["detection_count"]}x) - position refined, no new entry created.'
+                    )
+                    self.get_logger().info(f'{C.YELLOW}{response.message}{C.RESET}')
+                else:
+                    self.targets[marker_id] = {
+                        'position': Point(x=request.position.x,
+                                           y=request.position.y,
+                                           z=request.position.z),
+                        'waste_type': request.waste_type,
+                        'status': 'PENDING',
+                        'confidence': request.confidence,
+                        'first_detected_by': request.robot_name,
+                        'last_detected_by': request.robot_name,
+                        'detection_count': 1,
+                        'assigned_robot': '',
+                        'collected_by': '',
+                        'first_seen': now,
+                        'last_seen': now,
+                    }
+                    response.accepted = True
+                    response.is_duplicate = False
+                    response.target_id = marker_id
+                    response.message = f'New target {marker_id} registered by {request.robot_name}.'
+                    self.get_logger().info(f'{C.GREEN}{response.message}{C.RESET}')
+        except Exception as e:
+            self.get_logger().error(
+                f'{C.RED}register_detection crashed: {e}\n{traceback.format_exc()}{C.RESET}')
+            response.accepted = False
+            response.is_duplicate = False
+            response.message = f'Internal error: {e}'
 
         return response
 
@@ -181,55 +190,62 @@ class WasteDatabaseNode(Node):
     # Service: RequestTask
     # ----------------------------------------------------------------- #
     def handle_request_task(self, request, response):
-        with self.lock:
-            best_id = None
-            best_dist = float('inf')
-            rp = request.robot_pose.position
+        try:
+            with self.lock:
+                best_id = None
+                best_dist = float('inf')
+                rp = request.robot_pose.position
 
-            for tid, t in self.targets.items():
-                if t['status'] != 'PENDING':
-                    # Already ASSIGNED or COLLECTED -> not up for grabs.
-                    # This is what prevents redundant/duplicate assignment.
-                    continue
-                dist = math.hypot(t['position'].x - rp.x, t['position'].y - rp.y)
-                if dist < best_dist:
-                    best_dist = dist
-                    best_id = tid
+                for tid, t in self.targets.items():
+                    if t['status'] != 'PENDING':
+                        # Already ASSIGNED or COLLECTED -> not up for grabs.
+                        # This is what prevents redundant/duplicate assignment.
+                        continue
+                    dist = math.hypot(t['position'].x - rp.x, t['position'].y - rp.y)
+                    if dist < best_dist:
+                        best_dist = dist
+                        best_id = tid
 
-            if best_id is None:
-                response.task_available = False
-                response.task_id = -1
-                response.target_id = -1
+                if best_id is None:
+                    response.task_available = False
+                    response.task_id = -1
+                    response.target_id = -1
+                    self.get_logger().info(
+                        f'{C.YELLOW}{request.robot_name} requested a task but none are '
+                        f'available (no PENDING targets).{C.RESET}')
+                    return response
+
+                task_id = self._next_task_id
+                self._next_task_id += 1
+
+                self.tasks[task_id] = {
+                    'target_id': best_id,
+                    'robot_name': request.robot_name,
+                    'state': 'ASSIGNED',
+                    'assigned_time': self.get_clock().now().to_msg(),
+                }
+                self.targets[best_id]['status'] = 'ASSIGNED'
+                self.targets[best_id]['assigned_robot'] = request.robot_name
+
+                if request.robot_name in self.robots:
+                    self.robots[request.robot_name]['current_task_id'] = task_id
+                    self.robots[request.robot_name]['status'] = 'ASSIGNED'
+
+                response.task_available = True
+                response.task_id = task_id
+                response.target_id = best_id
+                response.target_position = self.targets[best_id]['position']
+                response.waste_type = self.targets[best_id]['waste_type']
+
                 self.get_logger().info(
-                    f'{C.YELLOW}{request.robot_name} requested a task but none are '
-                    f'available (no PENDING targets).{C.RESET}')
-                return response
-
-            task_id = self._next_task_id
-            self._next_task_id += 1
-
-            self.tasks[task_id] = {
-                'target_id': best_id,
-                'robot_name': request.robot_name,
-                'state': 'ASSIGNED',
-                'assigned_time': self.get_clock().now().to_msg(),
-            }
-            self.targets[best_id]['status'] = 'ASSIGNED'
-            self.targets[best_id]['assigned_robot'] = request.robot_name
-
-            if request.robot_name in self.robots:
-                self.robots[request.robot_name]['current_task_id'] = task_id
-                self.robots[request.robot_name]['status'] = 'ASSIGNED'
-
-            response.task_available = True
-            response.task_id = task_id
-            response.target_id = best_id
-            response.target_position = self.targets[best_id]['position']
-            response.waste_type = self.targets[best_id]['waste_type']
-
-            self.get_logger().info(
-                f'{C.CYAN}Assigned task {task_id} (target {best_id}, dist={best_dist:.2f}m) '
-                f'to {request.robot_name}.{C.RESET}')
+                    f'{C.CYAN}Assigned task {task_id} (target {best_id}, dist={best_dist:.2f}m) '
+                    f'to {request.robot_name}.{C.RESET}')
+        except Exception as e:
+            self.get_logger().error(
+                f'{C.RED}request_task crashed: {e}\n{traceback.format_exc()}{C.RESET}')
+            response.task_available = False
+            response.task_id = -1
+            response.target_id = -1
 
         return response
 
@@ -237,52 +253,58 @@ class WasteDatabaseNode(Node):
     # Service: ReportTaskStatus
     # ----------------------------------------------------------------- #
     def handle_report_task_status(self, request, response):
-        with self.lock:
-            task = self.tasks.get(request.task_id)
-            status = request.status.upper()
+        try:
+            with self.lock:
+                task = self.tasks.get(request.task_id)
+                status = request.status.upper()
 
-            if task is None:
-                response.success = False
-                response.message = f'No such task {request.task_id}.'
-                self.get_logger().warn(f'{C.RED}{response.message}{C.RESET}')
-                return response
+                if task is None:
+                    response.success = False
+                    response.message = f'No such task {request.task_id}.'
+                    self.get_logger().warn(f'{C.RED}{response.message}{C.RESET}')
+                    return response
 
-            if task['robot_name'] != request.robot_name:
-                response.success = False
-                response.message = (
-                    f'Task {request.task_id} belongs to {task["robot_name"]}, '
-                    f'not {request.robot_name}.'
-                )
-                self.get_logger().warn(f'{C.RED}{response.message}{C.RESET}')
-                return response
+                if task['robot_name'] != request.robot_name:
+                    response.success = False
+                    response.message = (
+                        f'Task {request.task_id} belongs to {task["robot_name"]}, '
+                        f'not {request.robot_name}.'
+                    )
+                    self.get_logger().warn(f'{C.RED}{response.message}{C.RESET}')
+                    return response
 
-            if status not in VALID_STATUSES:
-                response.success = False
-                response.message = f'Unknown status "{request.status}".'
-                self.get_logger().warn(f'{C.RED}{response.message}{C.RESET}')
-                return response
+                if status not in VALID_STATUSES:
+                    response.success = False
+                    response.message = f'Unknown status "{request.status}".'
+                    self.get_logger().warn(f'{C.RED}{response.message}{C.RESET}')
+                    return response
 
-            task['state'] = status
-            target_id = task['target_id']
+                task['state'] = status
+                target_id = task['target_id']
 
-            if status == 'COMPLETED':
-                self.targets[target_id]['status'] = 'COLLECTED'
-                self.targets[target_id]['collected_by'] = request.robot_name
-                self.targets[target_id]['assigned_robot'] = ''
-                self._free_robot(request.robot_name)
-            elif status == 'FAILED':
-                # Reopen the target so it can be picked up again (by this
-                # robot or the other one) instead of being stuck forever.
-                self.targets[target_id]['status'] = 'PENDING'
-                self.targets[target_id]['assigned_robot'] = ''
-                self._free_robot(request.robot_name)
-            # IN_PROGRESS: just update state, nothing else changes.
+                if status == 'COMPLETED':
+                    self.targets[target_id]['status'] = 'COLLECTED'
+                    self.targets[target_id]['collected_by'] = request.robot_name
+                    self.targets[target_id]['assigned_robot'] = ''
+                    self._free_robot(request.robot_name)
+                elif status == 'FAILED':
+                    # Reopen the target so it can be picked up again (by this
+                    # robot or the other one) instead of being stuck forever.
+                    self.targets[target_id]['status'] = 'PENDING'
+                    self.targets[target_id]['assigned_robot'] = ''
+                    self._free_robot(request.robot_name)
+                # IN_PROGRESS: just update state, nothing else changes.
 
-            response.success = True
-            response.message = f'Task {request.task_id} updated to {status}.'
-            log_color = C.BOLD_GREEN if status == 'COMPLETED' else (
-                C.RED if status == 'FAILED' else C.CYAN)
-            self.get_logger().info(f'{log_color}{response.message}{C.RESET}')
+                response.success = True
+                response.message = f'Task {request.task_id} updated to {status}.'
+                log_color = C.BOLD_GREEN if status == 'COMPLETED' else (
+                    C.RED if status == 'FAILED' else C.CYAN)
+                self.get_logger().info(f'{log_color}{response.message}{C.RESET}')
+        except Exception as e:
+            self.get_logger().error(
+                f'{C.RED}report_task_status crashed: {e}\n{traceback.format_exc()}{C.RESET}')
+            response.success = False
+            response.message = f'Internal error: {e}'
 
         return response
 

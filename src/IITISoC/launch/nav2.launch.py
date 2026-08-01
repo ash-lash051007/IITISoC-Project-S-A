@@ -46,7 +46,14 @@ def generate_launch_description():
         name='amcl',
         namespace='robot1',
         output='screen',
-        parameters=[nav2_params_r1, {'use_sim_time': True}],
+        parameters=[nav2_params_r1, {
+            'use_sim_time': True,
+            'set_initial_pose': True,
+            'initial_pose.x': 20.0,
+            'initial_pose.y': 24.0,
+            'initial_pose.z': 0.05,
+            'initial_pose.yaw': 0.0
+            }],
         remappings=[('scan', '/robot1/scan'),
                     ('tf', '/tf'),
                     ('tf_static', '/tf_static')]
@@ -186,7 +193,7 @@ def generate_launch_description():
         parameters=[{
             'use_sim_time': True,
             'autostart': True,
-            'bond_timeout': 15.0,
+            'bond_timeout': 60.0,
             'node_names': ['map_server', 'amcl']
         }]
     )
@@ -200,7 +207,7 @@ def generate_launch_description():
         parameters=[{
             'use_sim_time': True,
             'autostart': True,
-            'bond_timeout': 15.0,
+            'bond_timeout': 60.0,
             'node_names': [
                 'controller_server',
                 'smoother_server',
@@ -230,7 +237,14 @@ def generate_launch_description():
         name='amcl',
         namespace='robot2',
         output='screen',
-        parameters=[nav2_params_r2, {'use_sim_time': True}],
+        parameters=[nav2_params_r2, {
+            'use_sim_time': True,
+            'set_initial_pose': True,
+            'initial_pose.x': 26.0,
+            'initial_pose.y': 5.0,
+            'initial_pose.z': 0.05,
+            'initial_pose.yaw': 0.0
+            }],
         remappings=[('scan', '/robot2/scan'),
                     ('tf', '/tf'),
                     ('tf_static', '/tf_static')]
@@ -370,7 +384,7 @@ def generate_launch_description():
         parameters=[{
             'use_sim_time': True,
             'autostart': True,
-            'bond_timeout': 15.0,
+            'bond_timeout': 60.0,
             'node_names': ['map_server', 'amcl']
         }]
     )
@@ -384,7 +398,7 @@ def generate_launch_description():
         parameters=[{
             'use_sim_time': True,
             'autostart': True,
-            'bond_timeout': 15.0,
+            'bond_timeout': 60.0,
             'node_names': [
                 'controller_server',
                 'smoother_server',
@@ -414,7 +428,14 @@ def generate_launch_description():
         name='amcl',
         namespace='robot3',
         output='screen',
-        parameters=[nav2_params_r3, {'use_sim_time': True}],
+        parameters=[nav2_params_r3, {
+            'use_sim_time': True,
+            'set_initial_pose': True,
+            'initial_pose.x': 32.0,
+            'initial_pose.y': 25.0,
+            'initial_pose.z': 0.05,
+            'initial_pose.yaw': 0.0
+            }],
         remappings=[('scan', '/robot3/scan'),
                     ('tf', '/tf'),
                     ('tf_static', '/tf_static')]
@@ -554,7 +575,7 @@ def generate_launch_description():
         parameters=[{
             'use_sim_time': True,
             'autostart': True,
-            'bond_timeout': 15.0,
+            'bond_timeout': 60.0,
             'node_names': ['map_server', 'amcl']
         }]
     )
@@ -568,7 +589,7 @@ def generate_launch_description():
         parameters=[{
             'use_sim_time': True,
             'autostart': True,
-            'bond_timeout': 15.0,
+            'bond_timeout': 60.0,
             'node_names': [
                 'controller_server',
                 'smoother_server',

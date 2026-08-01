@@ -1,0 +1,7 @@
+# Request
+string room_name          # empty string = report on all rooms
+---
+# Response
+string[] room_names
+int32[] unseen_counts
+int32 global_unseen_count

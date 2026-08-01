@@ -1,0 +1,72 @@
+# Room and door geometry -- extracted directly from warehouse_world.world's
+# floor_warehouse_*, floor_storage_*, floor_office_* models and door jamb
+# positions. Do not hand-tune these; regenerate from the world file if the
+# map changes.
+
+rooms:
+  warehouse:
+    # list of [xmin, xmax, ymin, ymax] rectangles (union = room footprint)
+    rects:
+      - [0.0, 28.8, 18.0, 30.0]
+      - [0.0, 19.8, 0.0, 18.0]
+    home_spawn: [18.36, 23.90]   # most-open point, auto-selected earlier
+
+  storage:
+    rects:
+      - [19.8, 32.4, 7.8, 18.0]
+      - [19.8, 40.2, -13.2, 7.8]
+    home_spawn: [25.46, 5.95]
+
+  office:
+    rects:
+      - [28.8, 46.8, 18.0, 36.0]
+      - [32.4, 46.8, 7.8, 18.0]
+    home_spawn: [39.01, 13.50]
+
+# door gaps: floor-level walkable opening (x, y = center; width along
+# given axis). Used for the door-reservation lock during reallocation.
+doors:
+  - name: warehouse_storage
+    connects: [warehouse, storage]
+    center: [19.8, 9.0]
+    width_m: 2.0
+    axis: y
+
+  - name: warehouse_office
+    connects: [warehouse, office]
+    center: [28.8, 24.0]
+    width_m: 2.0
+    axis: y
+
+  - name: office_storage
+    connects: [office, storage]
+    center: [32.4, 12.9]
+    width_m: 2.0
+    axis: y
+
+# ArUco markers -- position + facing yaw (radians), for reference /
+# testing only. The coverage-frontier method does NOT use these values
+# at runtime (marker positions are treated as unknown to the robot);
+# they're here only so a test harness can check "was this marker's
+# position actually swept" after a simulated run.
+markers:
+  - {id: aruco_0,  x: 2.575,  y: 18.5,   yaw: -1.5708, room: warehouse}
+  - {id: aruco_1,  x: 17.0,   y: 3.075,  yaw: 0.0,      room: warehouse}
+  - {id: aruco_2,  x: 22.925, y: 20.0,   yaw: 1.5708,   room: warehouse}
+  - {id: aruco_8,  x: 12.0,   y: 25.925, yaw: 3.14159,  room: warehouse}
+  - {id: aruco_3,  x: 21.0,   y: 14.925, yaw: 0.0,      room: storage}
+  - {id: aruco_4,  x: 33.925, y: 5.0,    yaw: 1.5708,   room: storage}
+  - {id: aruco_5,  x: 38.925, y: -10.0,  yaw: 1.5708,   room: storage}
+  - {id: aruco_9,  x: 25.075, y: -4.0,   yaw: -1.5708,  room: storage}
+  - {id: aruco_6,  x: 43.925, y: 33.0,   yaw: 1.5708,   room: office}
+  - {id: aruco_7,  x: 35.0,   y: 9.075,  yaw: 0.0,      room: office}
+  - {id: aruco_10, x: 31.0,   y: 33.925, yaw: 0.0,      room: office}
+  - {id: aruco_11, x: 43.925, y: 12.0,   yaw: 1.5708,   room: office}
+
+clearance_m: 0.50
+detection_range_m: 2.5
+spin_interval_m: 2.5          # trigger a 360 Spin after this much travel
+robot_home_room:
+  robot_1: warehouse
+  robot_2: storage
+  robot_3: office

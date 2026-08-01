@@ -1,0 +1,12 @@
+# Request
+string room_name          # restrict search to this room; empty string = search globally
+float64 robot_x
+float64 robot_y
+---
+# Response
+bool found                # false if no unseen cells remain in the requested scope
+float64 target_x
+float64 target_y
+string found_in_room      # which room the returned cell actually belongs to
+int32 unseen_count_in_room
+int32 unseen_count_global

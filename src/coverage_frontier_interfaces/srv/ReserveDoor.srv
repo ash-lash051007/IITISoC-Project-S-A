@@ -1,0 +1,7 @@
+# Request
+string door_name
+string robot_id
+bool release              # false = acquire the lock, true = release it
+---
+# Response
+bool granted

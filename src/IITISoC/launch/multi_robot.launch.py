@@ -113,7 +113,7 @@ def generate_launch_description():
                 arguments=[
                     '-entity', 'robot2',
                     '-file', tb3_model_sdf_robot2,
-                    '-x', '26.0', '-y', '5', '-z', '0.05',
+                    '-x', '26.0', '-y', '5.0', '-z', '0.05',
                     '-robot_namespace', 'robot2'
                 ],
                 output='screen'
