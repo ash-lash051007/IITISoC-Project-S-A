@@ -366,7 +366,7 @@ Waste items confirmed by the shared database are assigned to robots using the **
 
 ## Shared Database
 
-A centralized database (`task_allocator_node`) tracks all detected waste items, robot states, and task assignments using in-memory Python dictionaries, communicating with the rest of the system entirely over ROS2 topics. A live web dashboard (`waste_database/dashboard/waste_dashboard.html`), served via `rosbridge_server`, visualizes real-time system status. Full schema and workflow details are documented in the final report.
+A centralized database (`waste_database_node`) tracks all detected waste items, robot states, and task assignments using in-memory Python dictionaries, communicating with the rest of the system entirely over ROS2 topics. A live web dashboard (`waste_database/dashboard/waste_dashboard.html`), served via `rosbridge_server`, visualizes real-time system status. Full schema and workflow details are documented in the final report.
 
 ---
 
