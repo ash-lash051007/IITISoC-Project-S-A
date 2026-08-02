@@ -72,6 +72,7 @@ class WasteDatabaseNode(Node):
         self.robots = {}         # robot_name (str) -> dict
         self.tasks = {}          # task_id (int)    -> dict
         self._next_task_id = 1
+        self.active_task_for_target = {}
 
         # --- parameters -----------------------------------------------------
         self.declare_parameter('publish_rate_hz', 2.0)
@@ -327,28 +328,44 @@ class WasteDatabaseNode(Node):
     def on_allocator_assignment(self, msg: TaskAssignmentArray):
         """Records decisions made by task_allocator_node's Hungarian solver.
         This node no longer decides WHO gets WHICH target -- it only
-        records and re-broadcasts what the allocator already decided."""
+        records and re-broadcasts what the allocator already decided.
+
+        task_id is generated HERE (self._next_task_id), never taken from the
+        incoming message -- the allocator's task_id equals its target_id,
+        which made the dashboard's Task column just duplicate the Target
+        column. Re-publishes of an already-active assignment update the
+        existing row in place instead of minting a new task_id every time,
+        so this stays idempotent under repeated allocator broadcasts."""
         with self.lock:
             for ta in msg.tasks:
                 target_id = ta.target_id
                 if target_id not in self.targets:
                     continue  # unknown target, ignore defensively
 
-                self.tasks[ta.task_id] = {
-                    'target_id': target_id,
-                    'robot_name': ta.robot_name,
-                    'state': 'ASSIGNED',
-                    'assigned_time': self.get_clock().now().to_msg(),
-                }
+                existing_task_id = self.active_task_for_target.get(target_id)
+                if existing_task_id is not None and existing_task_id in self.tasks:
+                    task_id = existing_task_id
+                    self.tasks[task_id]['robot_name'] = ta.robot_name
+                    self.tasks[task_id]['assigned_time'] = self.get_clock().now().to_msg()
+                else:
+                    task_id = self._next_task_id
+                    self._next_task_id += 1
+                    self.active_task_for_target[target_id] = task_id
+                    self.tasks[task_id] = {
+                        'target_id': target_id,
+                        'robot_name': ta.robot_name,
+                        'state': 'ASSIGNED',
+                        'assigned_time': self.get_clock().now().to_msg(),
+                    }
                 self.targets[target_id]['status'] = 'ASSIGNED'
                 self.targets[target_id]['assigned_robot'] = ta.robot_name
 
                 if ta.robot_name in self.robots:
-                    self.robots[ta.robot_name]['current_task_id'] = ta.task_id
+                    self.robots[ta.robot_name]['current_task_id'] = task_id
                     self.robots[ta.robot_name]['status'] = 'ASSIGNED'
 
                 self.get_logger().info(
-                    f'{C.CYAN}Recorded allocator assignment: task {ta.task_id} '
+                    f'{C.CYAN}Recorded allocator assignment: task {task_id} '
                     f'(target {target_id}) -> {ta.robot_name}{C.RESET}')
 
     # ----------------------------------------------------------------- #

@@ -214,7 +214,7 @@
       enabled: True
       observation_sources: scan
       scan:
-        topic: robot2/scan
+        topic: /robot2/scan
         max_obstacle_height: 2.0
         clearing: True
         marking: True

@@ -249,18 +249,12 @@
     ctx.scale(dpr, dpr);
     ctx.clearRect(0, 0, size, size);
 
-    const pts = [
-      ...state.targets.map(t => [t.position.x, t.position.y]),
-      ...state.robots.map(r => [r.pose?.position?.x ?? 0, r.pose?.position?.y ?? 0]),
-    ];
-    let minX=-2, maxX=2, minY=-2, maxY=2;
-    if(pts.length){
-      minX = Math.min(...pts.map(p=>p[0])); maxX = Math.max(...pts.map(p=>p[0]));
-      minY = Math.min(...pts.map(p=>p[1])); maxY = Math.max(...pts.map(p=>p[1]));
-    }
-    const spanX = Math.max(maxX-minX, 4), spanY = Math.max(maxY-minY, 4);
-    const cx = (minX+maxX)/2, cy = (minY+maxY)/2;
-    minX = cx-spanX/2-1; maxX = cx+spanX/2+1; minY = cy-spanY/2-1; maxY = cy+spanY/2+1;
+    // Fixed world bounds instead of auto-fit -- auto-fit was recomputing
+    // zoom/pan from ALL points every frame, so with targets spread far
+    // apart, small robot movements became visually imperceptible even
+    // though rotation (which ignores zoom) stayed visible. Adjust these
+    // two numbers if your world is bigger/smaller than this.
+    let minX = -5, maxX = 35, minY = -5, maxY = 35;
 
     const pad = 20;
     const scale = Math.min((size-2*pad)/(maxX-minX), (size-2*pad)/(maxY-minY));
