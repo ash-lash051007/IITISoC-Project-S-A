@@ -60,7 +60,6 @@ ros2_ws/src/
 │   ├── scripts/
 │   ├── urdf/
 │   │   ├── turtlebot3_waffle_fixed.urdf
-│   │   └── turtlebot3_waffle_fixed.urdf.bak
 │   ├── worlds/
 │   │   ├── warehouse-world(box).world
 │   │   └── warehouse_world.world             # Final 20m x 20m, 3-room warehouse
