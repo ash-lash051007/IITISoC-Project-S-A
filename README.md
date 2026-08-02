@@ -58,7 +58,6 @@ ros2_ws/src/
 │   │       └── model.sdf
 │   ├── resource/iitisoc
 │   ├── scripts/
-│   │   └── run_all.sh
 │   ├── urdf/
 │   │   ├── turtlebot3_waffle_fixed.urdf
 │   │   └── turtlebot3_waffle_fixed.urdf.bak
