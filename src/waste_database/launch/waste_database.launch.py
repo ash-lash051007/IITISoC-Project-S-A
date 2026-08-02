@@ -43,7 +43,14 @@ def generate_launch_description():
     robot_bridges = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(robot_bridges_launch_path)
     )
-
+    aruco_bridges_launch_path = os.path.join(
+        get_package_share_directory('waste_database'),
+        'launch',
+        'aruco_database_bridges.launch.py',
+    )
+    aruco_bridges = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(aruco_bridges_launch_path)
+    )
     # --- one task_manager_node per robot: requests tasks, drives to them
     # via Nav2, reports outcomes. Only launched if enable_task_managers is
     # true (see toggle above). Delayed slightly so the database node and
@@ -95,6 +102,7 @@ def generate_launch_description():
         enable_task_managers_arg,
         waste_database_node,
         robot_bridges,
+        aruco_bridges,
         task_managers,
         rosbridge,
         open_dashboard,

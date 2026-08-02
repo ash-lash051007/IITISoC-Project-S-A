@@ -14,6 +14,7 @@ setup(
             'launch/waste_database.launch.py',
             'launch/robot_state_bridges.launch.py',
             'launch/task_managers.launch.py',
+            'launch/aruco_database_bridges.launch.py',
         ]),
         ('share/' + package_name + '/dashboard', ['dashboard/waste_dashboard.html']),
     ],
@@ -29,6 +30,7 @@ setup(
             'waste_database_node = waste_database.waste_database_node:main',
             'robot_state_bridge_node = waste_database.robot_state_bridge_node:main',
             'task_manager_node = waste_database.task_manager_node:main',
+            'aruco_database_bridge_node = waste_database.aruco_database_bridge_node:main',
         ],
     },
 )

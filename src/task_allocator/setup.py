@@ -1,3 +1,5 @@
+import os
+from glob import glob
 from setuptools import setup
 
 package_name = 'task_allocator'
@@ -10,6 +12,8 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
+        # Include launch files in installation directory
+        (os.path.join('share', package_name, 'launch'), glob('launch/*.launch.py')),
     ],
     install_requires=['setuptools', 'scipy', 'numpy'],
     zip_safe=True,
@@ -20,6 +24,7 @@ setup(
     entry_points={
         'console_scripts': [
             'allocator_node = task_allocator.allocator_node:main',
+            'goal_sender_node = task_allocator.goal_sender_node:main',
         ],
     },
 )

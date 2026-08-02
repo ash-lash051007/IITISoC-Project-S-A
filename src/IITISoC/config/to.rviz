@@ -7,6 +7,7 @@ Panels:
         - /Map1/Topic1
         - /Map1/Update Topic1
         - /Odometry1/Topic1
+        - /Map2
       Splitter Ratio: 0.5735294222831726
     Tree Height: 561
   - Class: rviz_common/Selection
@@ -793,6 +794,27 @@ Visualization Manager:
         Reliability Policy: Reliable
         Value: /robot3/plan
       Value: true
+    - Alpha: 0.699999988079071
+      Class: rviz_default_plugins/Map
+      Color Scheme: costmap
+      Draw Behind: false
+      Enabled: true
+      Name: Map
+      Topic:
+        Depth: 5
+        Durability Policy: Transient Local
+        Filter size: 10
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /robot1/global_costmap/costmap
+      Update Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /robot1/global_costmap/costmap_updates
+      Use Timestamp: false
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -839,7 +861,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 27.552934646606445
+      Distance: 66.66276550292969
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -854,10 +876,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.5697963237762451
+      Pitch: 1.5547963380813599
       Target Frame: map
       Value: Orbit (rviz)
-      Yaw: 3.0544331073760986
+      Yaw: 3.114433765411377
     Saved: ~
 Window Geometry:
   Displays:

@@ -42,6 +42,7 @@ from waste_interfaces.srv import RegisterDetection, RequestTask, ReportTaskStatu
 
 
 VALID_STATUSES = {'IN_PROGRESS', 'COMPLETED', 'FAILED'}
+VALID_MARKER_IDS = set(range(12))
 
 
 class C:
@@ -98,6 +99,11 @@ class WasteDatabaseNode(Node):
         self.create_subscription(
             RobotState, '/robot_state', self.robot_state_callback, 10)
 
+        # --- subscriber: task_allocator_node's Hungarian assignment decisions ---
+        self.create_subscription(
+            TaskAssignmentArray, '/task_allocator/assignments',
+            self.on_allocator_assignment, latched_qos)
+
         # --- services: robot/perception <-> database communication -------
         self.create_service(
             RegisterDetection, '/waste_database/register_detection',
@@ -128,6 +134,13 @@ class WasteDatabaseNode(Node):
         try:
             with self.lock:
                 marker_id = request.marker_id
+                if marker_id not in VALID_MARKER_IDS:
+                    response.accepted = False
+                    response.is_duplicate = False
+                    response.target_id = marker_id
+                    response.message = f'Rejected: Marker ID {marker_id} is outside valid range (0-11).'
+                    self.get_logger().warn(f'{C.RED}{response.message}{C.RESET}')
+                    return response
                 now = self.get_clock().now().to_msg()
 
                 if marker_id in self.targets:
@@ -192,61 +205,41 @@ class WasteDatabaseNode(Node):
     def handle_request_task(self, request, response):
         try:
             with self.lock:
-                best_id = None
-                best_dist = float('inf')
-                rp = request.robot_pose.position
+                # No longer picks a target itself -- just hands back whatever
+                # task_allocator_node's Hungarian solver already assigned to
+                # this robot, if anything.
+                assigned_task_id = None
+                for task_id, t in self.tasks.items():
+                    if t['robot_name'] == request.robot_name and t['state'] == 'ASSIGNED':
+                        assigned_task_id = task_id
+                        break
 
-                for tid, t in self.targets.items():
-                    if t['status'] != 'PENDING':
-                        # Already ASSIGNED or COLLECTED -> not up for grabs.
-                        # This is what prevents redundant/duplicate assignment.
-                        continue
-                    dist = math.hypot(t['position'].x - rp.x, t['position'].y - rp.y)
-                    if dist < best_dist:
-                        best_dist = dist
-                        best_id = tid
-
-                if best_id is None:
+                if assigned_task_id is None:
                     response.task_available = False
                     response.task_id = -1
                     response.target_id = -1
                     self.get_logger().info(
-                        f'{C.YELLOW}{request.robot_name} requested a task but none are '
-                        f'available (no PENDING targets).{C.RESET}')
+                        f'{C.YELLOW}{request.robot_name} requested a task but the '
+                        f'allocator has not assigned one yet.{C.RESET}')
                     return response
 
-                task_id = self._next_task_id
-                self._next_task_id += 1
-
-                self.tasks[task_id] = {
-                    'target_id': best_id,
-                    'robot_name': request.robot_name,
-                    'state': 'ASSIGNED',
-                    'assigned_time': self.get_clock().now().to_msg(),
-                }
-                self.targets[best_id]['status'] = 'ASSIGNED'
-                self.targets[best_id]['assigned_robot'] = request.robot_name
-
-                if request.robot_name in self.robots:
-                    self.robots[request.robot_name]['current_task_id'] = task_id
-                    self.robots[request.robot_name]['status'] = 'ASSIGNED'
+                task_id = assigned_task_id
+                best_id = self.tasks[task_id]['target_id']
 
                 response.task_available = True
                 response.task_id = task_id
                 response.target_id = best_id
                 response.target_position = self.targets[best_id]['position']
                 response.waste_type = self.targets[best_id]['waste_type']
-
                 self.get_logger().info(
-                    f'{C.CYAN}Assigned task {task_id} (target {best_id}, dist={best_dist:.2f}m) '
-                    f'to {request.robot_name}.{C.RESET}')
+                    f'{C.CYAN}{request.robot_name} fetched its allocator-assigned '
+                    f'task {task_id} (target {best_id}).{C.RESET}')
         except Exception as e:
             self.get_logger().error(
                 f'{C.RED}request_task crashed: {e}\n{traceback.format_exc()}{C.RESET}')
             response.task_available = False
             response.task_id = -1
             response.target_id = -1
-
         return response
 
     # ----------------------------------------------------------------- #
@@ -322,11 +315,41 @@ class WasteDatabaseNode(Node):
             entry.update({
                 'robot_id': msg.robot_id,
                 'pose': msg.pose,
-                'status': msg.status,
-                'current_task_id': msg.current_task_id,
                 'battery_level': msg.battery_level,
                 'last_update': self.get_clock().now().to_msg(),
             })
+            entry.setdefault('current_task_id', -1)
+            entry.setdefault('status', 'IDLE')
+
+    # ----------------------------------------------------------------- #
+    # Subscriber: /task_allocator/assignments
+    # ----------------------------------------------------------------- #
+    def on_allocator_assignment(self, msg: TaskAssignmentArray):
+        """Records decisions made by task_allocator_node's Hungarian solver.
+        This node no longer decides WHO gets WHICH target -- it only
+        records and re-broadcasts what the allocator already decided."""
+        with self.lock:
+            for ta in msg.tasks:
+                target_id = ta.target_id
+                if target_id not in self.targets:
+                    continue  # unknown target, ignore defensively
+
+                self.tasks[ta.task_id] = {
+                    'target_id': target_id,
+                    'robot_name': ta.robot_name,
+                    'state': 'ASSIGNED',
+                    'assigned_time': self.get_clock().now().to_msg(),
+                }
+                self.targets[target_id]['status'] = 'ASSIGNED'
+                self.targets[target_id]['assigned_robot'] = ta.robot_name
+
+                if ta.robot_name in self.robots:
+                    self.robots[ta.robot_name]['current_task_id'] = ta.task_id
+                    self.robots[ta.robot_name]['status'] = 'ASSIGNED'
+
+                self.get_logger().info(
+                    f'{C.CYAN}Recorded allocator assignment: task {ta.task_id} '
+                    f'(target {target_id}) -> {ta.robot_name}{C.RESET}')
 
     # ----------------------------------------------------------------- #
     # Periodic broadcast: keeps all agents synchronized

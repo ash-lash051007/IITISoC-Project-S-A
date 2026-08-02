@@ -21,6 +21,12 @@ class ArucoDetector(Node):
 
         self.declare_parameter('robot_name', 'robot1')
         self.robot_name = self.get_parameter('robot_name').get_parameter_value().string_value
+        
+        self.waste_type_map = {
+            0: "recyclable", 1: "recyclable", 2: "recyclable", 3: "recyclable",
+            4: "hazardous",  5: "hazardous",  6: "hazardous",  7: "hazardous",
+            8: "general",    9: "general",    10: "general",   11: "general",
+        }
 
         self.get_logger().info(f'Starting detector for: {self.robot_name}')
 
@@ -122,7 +128,7 @@ class ArucoDetector(Node):
         """
         Publishes detection data using MAP coordinates.
         """
-
+        waste_type = self.waste_type_map.get(int(marker_id), "general")
         # PoseStamped in map frame — ready for Nav2
         pose_msg = PoseStamped()
         pose_msg.header.stamp = stamp
@@ -139,6 +145,7 @@ class ArucoDetector(Node):
         # JSON string with map coordinates for database
         detection_data = {
             'marker_id': int(marker_id),
+            'waste_type': waste_type,
             'map_x': round(float(map_x), 3),
             'map_y': round(float(map_y), 3),
             'map_z': round(float(map_z), 3),
